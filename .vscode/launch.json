@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Javascripts",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${file}"
+        },
+        {
+            "type": "debugpy",
+            "request": "launch",
+            "name": "Debug Python",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
