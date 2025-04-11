@@ -1,19 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { auth, isAdmin } = require("../middleware/auth");
-const {
-  createClass,
-  getClasses,
-  getClass,
-  updateClass,
-  deleteClass,
-} = require("../controllers/classController");
+const classController = require("../controllers/classController");
 
-// Admin routes
-router.post("/", auth, isAdmin, createClass);
-router.get("/", auth, isAdmin, getClasses);
-router.get("/:id", auth, isAdmin, getClass);
-router.put("/:id", auth, isAdmin, updateClass);
-router.delete("/:id", auth, isAdmin, deleteClass);
+// Admin only
+router.post("/", auth, isAdmin, classController.createClass);
+router.get("/", auth, isAdmin, classController.getClasses);
+router.get("/:id", auth, isAdmin, classController.getClass);
+router.put("/:id", auth, isAdmin, classController.updateClass);
+router.delete("/:id", auth, isAdmin, classController.deleteClass);
 
-module.exports = router; 
+module.exports = router;

@@ -1,10 +1,20 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const { validators } = require('../utils/validator');
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const { validators } = require("../utils/validator");
 
 const createUser = async (req, res) => {
   try {
-    const { username, password, fullName, role, email, phoneNumber, address, gender, dateOfBirth } = req.body;
+    const {
+      username,
+      password,
+      fullName,
+      role,
+      email,
+      phoneNumber,
+      address,
+      gender,
+      dateOfBirth
+    } = req.body;
 
     // Check if username or email already exists
     const existingUser = await User.findOne({
@@ -14,7 +24,10 @@ const createUser = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: existingUser.username === username ? 'Username already exists' : 'Email already exists'
+        message:
+          existingUser.username === username
+            ? "Username already exists"
+            : "Email already exists"
       });
     }
 
@@ -32,18 +45,18 @@ const createUser = async (req, res) => {
 
     await user.save();
 
-    const newUser = await User.findById(user._id).select('-password');
+    const newUser = await User.findById(user._id).select("-password");
 
     res.status(201).json({
       success: true,
       data: newUser
     });
   } catch (error) {
-    console.error('Create user error:', error);
+    console.error("Create user error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -56,7 +69,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid username or password'
+        message: "Invalid username or password"
       });
     }
 
@@ -64,15 +77,13 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid username or password'
+        message: "Invalid username or password"
       });
     }
 
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.BE_JWT_SECRET,
-      { expiresIn: process.env.BE_JWT_EXPIRES_IN }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.BE_JWT_SECRET, {
+      expiresIn: process.env.BE_JWT_EXPIRES_IN
+    });
 
     res.status(200).json({
       success: true,
@@ -83,17 +94,19 @@ const login = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error(error)
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: "Server error"
+      
     });
   }
 };
 
 const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
-    
+    const user = await User.findById(req.user._id).select("-password");
+
     res.status(200).json({
       success: true,
       data: user
@@ -101,59 +114,95 @@ const getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: "Server error"
     });
   }
 };
 
 const updateUser = async (req, res) => {
   try {
-    const { fullName, email, phoneNumber, address, gender, dateOfBirth, password } = req.body;
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      address,
+      gender,
+      dateOfBirth,
+      password
+    } = req.body;
 
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found"
       });
     }
 
     // Validate each field if provided
     const validationErrors = [];
-    
+
     if (email !== undefined) {
       const emailError = validators.email.validate(email).error;
-      if (emailError) validationErrors.push({ field: 'email', message: emailError.details[0].message });
+      if (emailError)
+        validationErrors.push({
+          field: "email",
+          message: emailError.details[0].message
+        });
     }
-    
+
     if (fullName !== undefined) {
       const fullNameError = validators.fullName.validate(fullName).error;
-      if (fullNameError) validationErrors.push({ field: 'fullName', message: fullNameError.details[0].message });
+      if (fullNameError)
+        validationErrors.push({
+          field: "fullName",
+          message: fullNameError.details[0].message
+        });
     }
-    
+
     if (phoneNumber !== undefined) {
       const phoneError = validators.phoneNumber.validate(phoneNumber).error;
-      if (phoneError) validationErrors.push({ field: 'phoneNumber', message: phoneError.details[0].message });
+      if (phoneError)
+        validationErrors.push({
+          field: "phoneNumber",
+          message: phoneError.details[0].message
+        });
     }
-    
+
     if (address !== undefined) {
       const addressError = validators.address.validate(address).error;
-      if (addressError) validationErrors.push({ field: 'address', message: addressError.details[0].message });
+      if (addressError)
+        validationErrors.push({
+          field: "address",
+          message: addressError.details[0].message
+        });
     }
-    
+
     if (gender !== undefined) {
       const genderError = validators.gender.validate(gender).error;
-      if (genderError) validationErrors.push({ field: 'gender', message: genderError.details[0].message });
+      if (genderError)
+        validationErrors.push({
+          field: "gender",
+          message: genderError.details[0].message
+        });
     }
-    
+
     if (dateOfBirth !== undefined) {
       const dobError = validators.dateOfBirth.validate(dateOfBirth).error;
-      if (dobError) validationErrors.push({ field: 'dateOfBirth', message: dobError.details[0].message });
+      if (dobError)
+        validationErrors.push({
+          field: "dateOfBirth",
+          message: dobError.details[0].message
+        });
     }
-    
+
     if (password !== undefined) {
       const passwordError = validators.password.validate(password).error;
-      if (passwordError) validationErrors.push({ field: 'password', message: passwordError.details[0].message });
+      if (passwordError)
+        validationErrors.push({
+          field: "password",
+          message: passwordError.details[0].message
+        });
     }
 
     if (validationErrors.length > 0) {
@@ -174,27 +223,28 @@ const updateUser = async (req, res) => {
 
     await user.save();
 
-    const updatedUser = await User.findById(user._id).select('-password');
+    const updatedUser = await User.findById(user._id).select("-password");
 
     res.status(200).json({
       success: true,
       data: updatedUser
     });
   } catch (error) {
-    console.error('Update user error:', error);
-    
+    console.error("Update user error:", error);
+
     // Handle specific errors
-    if (error.code === 11000) { // Duplicate key error
+    if (error.code === 11000) {
+      // Duplicate key error
       return res.status(400).json({
         success: false,
-        message: 'Email already exists'
+        message: "Email already exists"
       });
     }
 
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -208,7 +258,7 @@ const updateUserAdmin = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found"
       });
     }
 
@@ -218,14 +268,14 @@ const updateUserAdmin = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Password updated successfully'
+      message: "Password updated successfully"
     });
   } catch (error) {
-    console.error('Update password error:', error);
+    console.error("Update password error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -239,7 +289,7 @@ const deleteUser = async (req, res) => {
     if (!userToDelete) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found"
       });
     }
 
@@ -247,15 +297,15 @@ const deleteUser = async (req, res) => {
     if (userToDelete._id.toString() === req.user._id.toString()) {
       return res.status(400).json({
         success: false,
-        message: 'You cannot delete yourself'
+        message: "You cannot delete yourself"
       });
     }
 
     // Check if trying to delete another admin (only super admin can delete other admins)
-    if (userToDelete.role === 'admin' && req.user.role !== 'admin') {
+    if (userToDelete.role === "admin" && req.user.role !== "admin") {
       return res.status(403).json({
         success: false,
-        message: 'Only admin can delete other admin users'
+        message: "Only admin can delete other admin users"
       });
     }
 
@@ -263,14 +313,14 @@ const deleteUser = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'User deleted successfully'
+      message: "User deleted successfully"
     });
   } catch (error) {
-    console.error('Delete user error:', error);
+    console.error("Delete user error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -278,66 +328,111 @@ const deleteUser = async (req, res) => {
 const updateUserByAdmin = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { fullName, email, phoneNumber, address, gender, dateOfBirth, password, role } = req.body;
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      address,
+      gender,
+      dateOfBirth,
+      password,
+      role
+    } = req.body;
 
     // Check if user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found"
       });
     }
 
     // Check if trying to update self's role
-    if (user._id.toString() === req.user._id.toString() && role && role !== user.role) {
+    if (
+      user._id.toString() === req.user._id.toString() &&
+      role &&
+      role !== user.role
+    ) {
       return res.status(400).json({
         success: false,
-        message: 'You cannot change your own role'
+        message: "You cannot change your own role"
       });
     }
 
     // Validate each field if provided
     const validationErrors = [];
-    
+
     if (email !== undefined) {
       const emailError = validators.email.validate(email).error;
-      if (emailError) validationErrors.push({ field: 'email', message: emailError.details[0].message });
+      if (emailError)
+        validationErrors.push({
+          field: "email",
+          message: emailError.details[0].message
+        });
     }
-    
+
     if (fullName !== undefined) {
       const fullNameError = validators.fullName.validate(fullName).error;
-      if (fullNameError) validationErrors.push({ field: 'fullName', message: fullNameError.details[0].message });
+      if (fullNameError)
+        validationErrors.push({
+          field: "fullName",
+          message: fullNameError.details[0].message
+        });
     }
-    
+
     if (phoneNumber !== undefined) {
       const phoneError = validators.phoneNumber.validate(phoneNumber).error;
-      if (phoneError) validationErrors.push({ field: 'phoneNumber', message: phoneError.details[0].message });
+      if (phoneError)
+        validationErrors.push({
+          field: "phoneNumber",
+          message: phoneError.details[0].message
+        });
     }
-    
+
     if (address !== undefined) {
       const addressError = validators.address.validate(address).error;
-      if (addressError) validationErrors.push({ field: 'address', message: addressError.details[0].message });
+      if (addressError)
+        validationErrors.push({
+          field: "address",
+          message: addressError.details[0].message
+        });
     }
-    
+
     if (gender !== undefined) {
       const genderError = validators.gender.validate(gender).error;
-      if (genderError) validationErrors.push({ field: 'gender', message: genderError.details[0].message });
+      if (genderError)
+        validationErrors.push({
+          field: "gender",
+          message: genderError.details[0].message
+        });
     }
-    
+
     if (dateOfBirth !== undefined) {
       const dobError = validators.dateOfBirth.validate(dateOfBirth).error;
-      if (dobError) validationErrors.push({ field: 'dateOfBirth', message: dobError.details[0].message });
+      if (dobError)
+        validationErrors.push({
+          field: "dateOfBirth",
+          message: dobError.details[0].message
+        });
     }
-    
+
     if (password !== undefined) {
       const passwordError = validators.password.validate(password).error;
-      if (passwordError) validationErrors.push({ field: 'password', message: passwordError.details[0].message });
+      if (passwordError)
+        validationErrors.push({
+          field: "password",
+          message: passwordError.details[0].message
+        });
     }
 
     if (role !== undefined) {
       const roleError = validators.role.validate(role).error;
-      if (roleError) validationErrors.push({ field: 'role', message: roleError.details[0].message });
+      if (roleError)
+        validationErrors.push({
+          field: "role",
+          message: roleError.details[0].message
+        });
     }
 
     if (validationErrors.length > 0) {
@@ -359,27 +454,28 @@ const updateUserByAdmin = async (req, res) => {
 
     await user.save();
 
-    const updatedUser = await User.findById(user._id).select('-password');
+    const updatedUser = await User.findById(user._id).select("-password");
 
     res.status(200).json({
       success: true,
       data: updatedUser
     });
   } catch (error) {
-    console.error('Update user by admin error:', error);
-    
+    console.error("Update user by admin error:", error);
+
     // Handle specific errors
-    if (error.code === 11000) { // Duplicate key error
+    if (error.code === 11000) {
+      // Duplicate key error
       return res.status(400).json({
         success: false,
-        message: 'Email already exists'
+        message: "Email already exists"
       });
     }
 
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -387,39 +483,50 @@ const updateUserByAdmin = async (req, res) => {
 // Get all users
 const getUsers = async (req, res) => {
   try {
-    const { username, fullName, role, email, phoneNumber, address, gender, dateOfBirth, page = 1, limit = 10 } = req.query;
-    
+    const {
+      username,
+      fullName,
+      role,
+      email,
+      phoneNumber,
+      address,
+      gender,
+      dateOfBirth,
+      page = 1,
+      limit = 10
+    } = req.query;
+
     // Build filter query
     const filter = {};
-    
+
     if (username) {
-      filter.username = { $regex: username, $options: 'i' };
+      filter.username = { $regex: username, $options: "i" };
     }
-    
+
     if (fullName) {
-      filter.fullName = { $regex: fullName, $options: 'i' };
+      filter.fullName = { $regex: fullName, $options: "i" };
     }
-    
+
     if (role) {
       filter.role = role;
     }
-    
+
     if (email) {
-      filter.email = { $regex: email, $options: 'i' };
+      filter.email = { $regex: email, $options: "i" };
     }
-    
+
     if (phoneNumber) {
-      filter.phoneNumber = { $regex: phoneNumber, $options: 'i' };
+      filter.phoneNumber = { $regex: phoneNumber, $options: "i" };
     }
-    
+
     if (address) {
-      filter.address = { $regex: address, $options: 'i' };
+      filter.address = { $regex: address, $options: "i" };
     }
-    
+
     if (gender) {
       filter.gender = gender;
     }
-    
+
     if (dateOfBirth) {
       const { from, to } = JSON.parse(dateOfBirth);
       if (from && to) {
@@ -433,7 +540,7 @@ const getUsers = async (req, res) => {
 
     const total = await User.countDocuments(filter);
     const users = await User.find(filter)
-      .select('-password')
+      .select("-password")
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -448,11 +555,11 @@ const getUsers = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get users error:', error);
+    console.error("Get users error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -460,39 +567,50 @@ const getUsers = async (req, res) => {
 // Filter users
 const filterUsers = async (req, res) => {
   try {
-    const { username, fullName, role, email, phoneNumber, address, gender, dateOfBirth, page = 1, limit = 10 } = req.body;
-    
+    const {
+      username,
+      fullName,
+      role,
+      email,
+      phoneNumber,
+      address,
+      gender,
+      dateOfBirth,
+      page = 1,
+      limit = 10
+    } = req.body;
+
     // Build filter query
     const filter = {};
-    
+
     if (username) {
-      filter.username = { $regex: username, $options: 'i' };
+      filter.username = { $regex: username, $options: "i" };
     }
-    
+
     if (fullName) {
-      filter.fullName = { $regex: fullName, $options: 'i' };
+      filter.fullName = { $regex: fullName, $options: "i" };
     }
-    
+
     if (role) {
       filter.role = role;
     }
-    
+
     if (email) {
-      filter.email = { $regex: email, $options: 'i' };
+      filter.email = { $regex: email, $options: "i" };
     }
-    
+
     if (phoneNumber) {
-      filter.phoneNumber = { $regex: phoneNumber, $options: 'i' };
+      filter.phoneNumber = { $regex: phoneNumber, $options: "i" };
     }
-    
+
     if (address) {
-      filter.address = { $regex: address, $options: 'i' };
+      filter.address = { $regex: address, $options: "i" };
     }
-    
+
     if (gender) {
       filter.gender = gender;
     }
-    
+
     if (dateOfBirth) {
       const { from, to } = dateOfBirth;
       if (from && to) {
@@ -506,7 +624,7 @@ const filterUsers = async (req, res) => {
 
     const total = await User.countDocuments(filter);
     const users = await User.find(filter)
-      .select('-password')
+      .select("-password")
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -521,11 +639,11 @@ const filterUsers = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Filter users error:', error);
+    console.error("Filter users error:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: "Server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
     });
   }
 };
@@ -539,4 +657,4 @@ module.exports = {
   updateUserByAdmin,
   filterUsers,
   getUsers
-}; 
+};

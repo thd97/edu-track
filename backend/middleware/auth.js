@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'No token provided'
+        message: 'No authentication token found'
       });
     }
 
@@ -26,7 +26,8 @@ const auth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({
+    console.error(error)
+    res.status(401).json({
       success: false,
       message: 'Invalid token'
     });
@@ -34,26 +35,40 @@ const auth = async (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Admin role required.'
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Access denied. Admin role required.'
+      message: 'Server error'
     });
   }
-  next();
 };
 
 const isTeacher = async (req, res, next) => {
-  if (req.user.role !== 'teacher') {
-    return res.status(403).json({
+  try {
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Teacher role required.'
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Access denied. Teacher role required.'
+      message: 'Server error'
     });
   }
-  next();
 };
 
-const isTeacherOfClass = async (req, res, next) => {
+const isTeacherInClass = async (req, res, next) => {
   try {
     if (req.user.role === 'admin') {
       return next();
@@ -85,7 +100,7 @@ const isTeacherOfClass = async (req, res, next) => {
     if (classData.teacher.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
-        message: 'Access denied. You are not the teacher of this class.'
+        message: 'You are not the teacher of this class'
       });
     }
 
@@ -93,10 +108,9 @@ const isTeacherOfClass = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: 'Server error'
     });
   }
 };
 
-module.exports = { auth, isAdmin, isTeacher, isTeacherOfClass }; 
+module.exports = { auth, isAdmin, isTeacher, isTeacherInClass }; 

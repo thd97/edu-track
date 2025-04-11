@@ -1,25 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { auth, isAdmin, isTeacherOfClass } = require("../middleware/auth");
-const {
-  createStudent,
-  getStudents,
-  getStudent,
-  updateStudent,
-  deleteStudent,
-  getStudentsByClass,
-  filterStudents,
-} = require("../controllers/studentController");
+const { auth, isAdmin, isTeacherInClass } = require("../middleware/auth");
+const studentController = require("../controllers/studentController");
 
-// Admin routes
-router.post("/", auth, isAdmin, createStudent);
-router.get("/", auth, isAdmin, getStudents);
-router.get("/:id", auth, isAdmin, getStudent);
-router.put("/:id", auth, isAdmin, updateStudent);
-router.delete("/:id", auth, isAdmin, deleteStudent);
-router.post("/filter", auth, isAdmin, filterStudents);
+// Admin only
+router.post("/", auth, isAdmin, studentController.createStudent);
+router.get("/", auth, isAdmin, studentController.getStudents);
+router.get("/:id", auth, isAdmin, studentController.getStudent);
+router.put("/:id", auth, isAdmin, studentController.updateStudent);
+router.delete("/:id", auth, isAdmin, studentController.deleteStudent);
+router.post("/filter", auth, isAdmin, studentController.filterStudents);
 
 // Teacher routes
-router.get("/class/:classId", auth, isTeacherOfClass, getStudentsByClass);
+router.get("/class/:classId", auth, isTeacherInClass, studentController.getStudentsByClass);
 
-module.exports = router; 
+module.exports = router;

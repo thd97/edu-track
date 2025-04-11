@@ -13,9 +13,9 @@ const validators = {
     "any.required": "Username is required",
   }),
 
-  fullName: Joi.string().min(5).required().messages({
+  fullName: Joi.string().min(2).required().messages({
     "string.base": "Full name must be a string",
-    "string.min": "Full name must be at least 5 characters long",
+    "string.min": "Full name must be at least 2 characters long",
     "any.required": "Full name is required",
   }),
 
