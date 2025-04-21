@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="462.0" prefWidth="442.0" spacing="20" style="-fx-background-color: #F5F7FA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.LoginController">
+
+    <padding>
+        <Insets bottom="50.0" left="60.0" right="60.0" />
+    </padding>
+
+    <children>
+          <Button onAction="#handleClose" style="-fx-background-color: transparent; -fx-text-fill: #1F2D3D; -fx-font-weight: bold;" text="X" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Button>
+
+        <!-- Nút Close ở góc phải trên -->
+        <HBox alignment="TOP_RIGHT" />
+
+        <!-- Tiêu đề -->
+        <Label style="-fx-font-size: 35px; -fx-text-fill: #1F2D3D; -fx-font-weight: bold;" text="Login" />
+
+        <!-- Form -->
+        <VBox alignment="CENTER" spacing="10">
+            <children>
+
+                <!-- Email -->
+                <TextField fx:id="emailField" prefWidth="260" promptText="Email" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
+
+                <!-- Password -->
+                <PasswordField fx:id="passwordField" prefWidth="260" promptText="Password" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
+
+                <!-- Forgot Password -->
+                <HBox alignment="CENTER_RIGHT" prefWidth="260">
+                    <children>
+                        <Hyperlink onAction="#handleForgotPassword" style="-fx-text-fill: #7B8A9A;" text="Forgot password?" />
+                    </children>
+                </HBox>
+
+                <!-- Login button -->
+                <Button onAction="#handleLogin" prefWidth="260" style="-fx-background-color: #1F2D3D; -fx-text-fill: white; -fx-background-radius: 8px; -fx-font-size: 14px;" text="Login" />
+
+            </children>
+        </VBox>
+    </children>
+</VBox>
