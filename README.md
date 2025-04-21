@@ -6,3 +6,9 @@
 3. Open project and cd backend folder by command `cd backend`
 4. Install dependencies by command `npm install`
 5. Run server by command `node start`
+
+# FE build 
+1. Java JDK 21: `https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.zip`
+2. JavaFX SDK (GluonHQ): `https://download2.gluonhq.com/openjfx/24.0.1/openjfx-24.0.1_windows-x64_bin-sdk.zip`
+
+
