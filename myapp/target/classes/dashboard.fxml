@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+    <left>
+        <VBox prefWidth="200.0" spacing="20" style="-fx-background-color: #FAFAFA; -fx-padding: 30;">
+            <children>
+                <Label text="Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+                <!-- Menu buttons -->
+                <VBox spacing="10">
+                    <Button fx:id="btnAccounts" text="Accounts" style="-fx-background-color: #EDEDED; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnTeachers" text="Teachers" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnStudents" text="Students" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnClasses" text="Classes" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnExams" text="Exams" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnResults" text="Exam results" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                    <Button fx:id="btnAttendance" text="Attendance" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                </VBox>
+
+                <!-- Spacer -->
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnLogout" text="LOGOUT" style="-fx-background-color: black; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10 20;" />
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox fx:id="tableView" spacing="20" style="-fx-padding: 30;">
+            <children>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Active issues" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <!-- Search field -->
+                    <HBox spacing="5" alignment="CENTER_LEFT" style="-fx-background-color: #F5F5F5; -fx-padding: 6 10 6 10; -fx-background-radius: 5; -fx-border-color: #CCC; -fx-border-radius: 5;">
+                        <Label text="🔍" />
+                        <TextField fx:id="txtSearch" promptText="Search tickets..." style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                    </HBox>
+
+                    <!-- Filter button -->
+                    <Button fx:id="btnFilter" text="Filter" style="-fx-background-color: #F5F5F5; -fx-background-radius: 5; -fx-border-color: #CCC; -fx-border-radius: 5; -fx-padding: 6 16;" />
+
+                    <!-- Spacer -->
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <!-- View buttons -->
+                    <Button fx:id="btnListView" text="☰" style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                    <Button fx:id="btnCalendarView" text="📅" style="-fx-background-color: transparent; -fx-font-size: 16px;" />
+                </HBox>
+
+                <!-- Content placeholder -->
+                <AnchorPane fx:id="contentArea" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
