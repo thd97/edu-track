@@ -7,18 +7,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="462.0" prefWidth="442.0" spacing="20" style="-fx-background-color: #F5F7FA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.LoginController">
+<VBox alignment="CENTER" prefHeight="462.0" prefWidth="442.0" spacing="20" style="-fx-background-color: #F5F7FA;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.frontend.LoginController">
 
     <padding>
         <Insets bottom="50.0" left="60.0" right="60.0" />
     </padding>
 
     <children>
-          <Button onAction="#handleClose" style="-fx-background-color: transparent; -fx-text-fill: #1F2D3D; -fx-font-weight: bold;" text="X" textAlignment="CENTER">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Button>
 
         <!-- Nút Close ở góc phải trên -->
         <HBox alignment="TOP_RIGHT" />
@@ -31,10 +28,12 @@
             <children>
 
                 <!-- Email -->
-                <TextField fx:id="emailField" prefWidth="260" promptText="Email" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
+                <TextField fx:id="usernameField" prefWidth="260" promptText="Username"
+                           style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
 
                 <!-- Password -->
-                <PasswordField fx:id="passwordField" prefWidth="260" promptText="Password" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
+                <PasswordField fx:id="passwordField" prefWidth="260" promptText="Password"
+                               style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
 
                 <!-- Forgot Password -->
                 <HBox alignment="CENTER_RIGHT" prefWidth="260">
@@ -44,7 +43,9 @@
                 </HBox>
 
                 <!-- Login button -->
-                <Button onAction="#handleLogin" prefWidth="260" style="-fx-background-color: #1F2D3D; -fx-text-fill: white; -fx-background-radius: 8px; -fx-font-size: 14px;" text="Login" />
+                <Button onAction="#handleLogin" prefWidth="260"
+                        style="-fx-background-color: #1F2D3D; -fx-text-fill: white; -fx-background-radius: 8px; -fx-font-size: 14px;"
+                        text="Login" />
 
             </children>
         </VBox>
