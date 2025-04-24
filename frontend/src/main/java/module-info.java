@@ -11,6 +11,8 @@ module com.example.frontend {
     requires com.almasb.fxgl.all;
     requires java.net.http;
     requires org.json;
+//    requires io.github.cdimascio.dotenv.java;
+    requires com.google.gson;
 
     opens com.example.frontend to javafx.fxml;
     exports com.example.frontend;
