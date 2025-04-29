@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.UpdateClassController">
+    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <Label text="Update Class" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <TextField fx:id="nameField" promptText="Class Name"/>
+        <TextField fx:id="codeField" promptText="Class Code"/>
+        <TextField fx:id="descriptionField" promptText="Description"/>
+
+        <HBox spacing="10">
+            <Button text="Update" onAction="#updateClass"/>
+            <Button text="Cancel" onAction="#cancelUpdate"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
