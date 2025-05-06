@@ -12,15 +12,16 @@
                 <Label text="Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
                 <!-- Menu buttons -->
-                <VBox spacing="10">
-                    <Button fx:id="btnAccounts" text="Accounts" style="-fx-background-color: #EDEDED; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnTeachers" text="Teachers" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnStudents" text="Students" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnClasses" text="Classes" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnExams" text="Exams" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnResults" text="Exam results" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
-                    <Button fx:id="btnAttendance" text="Attendance" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT; -fx-padding: 10;" />
+                <VBox spacing="10" stylesheets="@style.css">
+                    <Button fx:id="btnAccounts" text="Accounts" styleClass="transparent-button" />
+                    <Button fx:id="btnTeachers" text="Teachers" styleClass="transparent-button" />
+                    <Button fx:id="btnStudents" text="Students" styleClass="transparent-button" />
+                    <Button fx:id="btnClasses" text="Classes" styleClass="transparent-button" />
+                    <Button fx:id="btnExams" text="Exams" styleClass="transparent-button" />
+                    <Button fx:id="btnResults" text="Exam results" styleClass="transparent-button" />
+                    <Button fx:id="btnAttendance" text="Attendance" styleClass="transparent-button" />
                 </VBox>
+
 
                 <!-- Spacer -->
                 <Region VBox.vgrow="ALWAYS" />

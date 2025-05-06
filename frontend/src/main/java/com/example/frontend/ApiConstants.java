@@ -22,4 +22,11 @@ public class ApiConstants {
     public static final String CREATE_STUDENT_API = BASE_URL + "/api/students";
     public static final String UPDATE_STUDENT_API = BASE_URL + "/api/students/:id";
     public static final String DELETE_STUDENT_API = BASE_URL + "/api/students/:id";
+    // Exams APIs
+    public static final String GET_EXAMS_API = BASE_URL + "/api/exams";
+    public static final String CREATE_EXAM_API = BASE_URL + "/api/exams";
+    public static final String UPDATE_EXAM_API = BASE_URL + "/api/exams/:id";
+    public static final String DELETE_EXAM_API = BASE_URL + "/api/exams/:id";
+
+
 }
