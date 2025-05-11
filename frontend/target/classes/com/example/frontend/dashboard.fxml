@@ -19,7 +19,7 @@
                     <Button fx:id="btnClasses" text="Classes" styleClass="transparent-button" />
                     <Button fx:id="btnExams" text="Exams" styleClass="transparent-button" />
                     <Button fx:id="btnResults" text="Exam results" styleClass="transparent-button" />
-                    <Button fx:id="btnAttendance" text="Attendance" styleClass="transparent-button" />
+                    <Button fx:id="btnPeriod" text="Period" styleClass="transparent-button" />
                 </VBox>
 
 

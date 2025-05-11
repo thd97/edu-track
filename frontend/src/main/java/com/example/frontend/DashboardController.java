@@ -33,7 +33,7 @@ public class DashboardController {
     @FXML private Button btnClasses;
     @FXML private Button btnExams;
     @FXML private Button btnResults;
-    @FXML private Button btnAttendance;
+    @FXML private Button btnPeriod;
     @FXML private Button btnLogout;
     @FXML private AnchorPane contentArea;
 
@@ -63,7 +63,7 @@ public class DashboardController {
         btnClasses.setOnAction(event -> loadClasses());
         btnExams.setOnAction(event -> loadExams());
         btnResults.setOnAction(event -> loadData("/results"));
-        btnAttendance.setOnAction(event -> loadData("/attendance"));
+        btnPeriod.setOnAction(event -> loadPeriod());
         btnLogout.setOnAction(event -> logout());
         btnFilter.setOnAction(event -> txtSearch.clear());
 
@@ -122,7 +122,17 @@ public class DashboardController {
             displayText("Lỗi khi tải trang Exam: " + e.getMessage());
         }
     }
-
+    private void loadPeriod() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/period.fxml"));
+            BorderPane periodPane = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(periodPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayText("Lỗi khi tải trang Period: " + e.getMessage());
+        }
+    }
     private void loadData(String endpoint) {
         Task<List<MyDataModel>> task = new Task<>() {
             @Override
