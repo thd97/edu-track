@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.UpdatePeriodController">
-    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
-        <Label text="Update Period" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <children>
+        <!-- Period Number Field -->
+        <TextField fx:id="periodNumberField" layoutX="50" layoutY="50" promptText="Period Number" />
 
-        <TextField fx:id="periodNumberField" promptText="Period Number"/>
-        <DatePicker fx:id="startDatePicker" promptText="Start Date"/>
-        <DatePicker fx:id="endDatePicker" promptText="End Date"/>
+        <!-- Start Time Field (HH:mm) -->
+        <TextField fx:id="startTimeField" layoutX="50" layoutY="100" promptText="Start Time (HH:mm)" />
 
-        <HBox spacing="10">
-            <Button text="Update" onAction="#updatePeriod"/>
-            <Button text="Cancel" onAction="#cancelUpdate"/>
-        </HBox>
-    </VBox>
+        <!-- End Time Field (HH:mm) -->
+        <TextField fx:id="endTimeField" layoutX="50" layoutY="150" promptText="End Time (HH:mm)" />
+
+        <!-- Save Button -->
+        <Button text="Save" layoutX="50" layoutY="200" onAction="#updatePeriod"/>
+
+        <!-- Cancel Button -->
+        <Button text="Cancel" layoutX="150" layoutY="200" onAction="#cancelUpdate"/>
+    </children>
 </AnchorPane>

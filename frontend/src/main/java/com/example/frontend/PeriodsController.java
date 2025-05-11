@@ -106,7 +106,7 @@ public class PeriodsController {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/editPeriod.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/updatePeriod.fxml"));
             AnchorPane page = loader.load();
             UpdatePeriodController controller = loader.getController();
             controller.setPeriod(selected);

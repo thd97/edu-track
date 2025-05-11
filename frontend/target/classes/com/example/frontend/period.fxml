@@ -26,8 +26,6 @@
                             <TableColumn fx:id="periodNumberColumn" text="Period #" prefWidth="100.0" />
                             <TableColumn fx:id="startTimeColumn" text="Start Time" prefWidth="200.0" />
                             <TableColumn fx:id="endTimeColumn" text="End Time" prefWidth="200.0" />
-                            <!-- Thêm cột nameColumn -->
-                            <TableColumn fx:id="nameColumn" text="Name" prefWidth="200.0" />
                         </columns>
                     </TableView>
 

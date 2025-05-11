@@ -5,10 +5,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -21,27 +18,57 @@ import java.util.Map;
 
 public class NewPeriodController {
 
-    @FXML private DatePicker startDatePicker;
-    @FXML private DatePicker endDatePicker;
+    @FXML private TextField periodNumberField;
+
+    @FXML private ComboBox<String> startHourBox;
+    @FXML private ComboBox<String> startMinuteBox;
+    @FXML private ComboBox<String> endHourBox;
+    @FXML private ComboBox<String> endMinuteBox;
 
     @FXML
     public void initialize() {
-        // Khởi tạo nếu cần
+        // Populate hours (00 - 23)
+        for (int i = 0; i < 24; i++) {
+            String hour = String.format("%02d", i);
+            startHourBox.getItems().add(hour);
+            endHourBox.getItems().add(hour);
+        }
+
+        // Populate minutes (00, 05, ..., 55)
+        for (int i = 0; i < 60; i += 5) {
+            String minute = String.format("%02d", i);
+            startMinuteBox.getItems().add(minute);
+            endMinuteBox.getItems().add(minute);
+        }
+
+        // Default selections
+        startHourBox.getSelectionModel().select("08");
+        startMinuteBox.getSelectionModel().select("00");
+        endHourBox.getSelectionModel().select("09");
+        endMinuteBox.getSelectionModel().select("30");
     }
 
     @FXML
     private void savePeriod() {
-        String startDate = (startDatePicker.getValue() != null) ? startDatePicker.getValue().toString() : "";
-        String endDate = (endDatePicker.getValue() != null) ? endDatePicker.getValue().toString() : "";
+        String periodNumber = periodNumberField.getText() != null ? periodNumberField.getText().trim() : "";
 
-        if (startDate.isEmpty() || endDate.isEmpty()) {
-            showAlert("Vui lòng nhập đầy đủ thông tin kỳ học.");
+        String startHour = startHourBox.getValue();
+        String startMinute = startMinuteBox.getValue();
+        String endHour = endHourBox.getValue();
+        String endMinute = endMinuteBox.getValue();
+
+        if (periodNumber.isEmpty() || startHour == null || startMinute == null || endHour == null || endMinute == null) {
+            showAlert("Vui lòng nhập đầy đủ thông tin kỳ học và thời gian.");
             return;
         }
 
+        String startTime = startHour + ":" + startMinute;
+        String endTime = endHour + ":" + endMinute;
+
         Map<String, String> newPeriod = new HashMap<>();
-        newPeriod.put("startDate", startDate);
-        newPeriod.put("endDate", endDate);
+        newPeriod.put("periodNumber", periodNumber);
+        newPeriod.put("startTime", startTime);
+        newPeriod.put("endTime", endTime);
 
         Task<Void> task = new Task<>() {
             @Override
@@ -58,9 +85,11 @@ public class NewPeriodController {
                         .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
                 if (response.statusCode() != 201) {
                     throw new RuntimeException("Lỗi khi tạo kỳ học: " + response.body());
                 }
+
                 return null;
             }
         };
@@ -77,7 +106,7 @@ public class NewPeriodController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("period.fxml"));
             Parent periodRoot = loader.load();
 
-            AnchorPane rootPane = (AnchorPane) startDatePicker.getScene().lookup("#contentArea");
+            AnchorPane rootPane = (AnchorPane) periodNumberField.getScene().lookup("#contentArea");
             if (rootPane != null) {
                 rootPane.getChildren().setAll(periodRoot);
             } else {
