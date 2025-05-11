@@ -3,21 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.NewStudentController">
-    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
-        <Label text="Create New Student" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.frontend.NewStudentController">
+    <children>
+        <Label text="Create New Student" layoutX="50" layoutY="30"/>
 
-        <TextField fx:id="fullNameField" promptText="Full Name"/>
-        <TextField fx:id="emailField" promptText="Email"/>
-        <TextField fx:id="phoneNumberField" promptText="Phone Number"/>
-        <ComboBox fx:id="genderComboBox" promptText="Select Gender"/>
-        <DatePicker fx:id="dateOfBirthPicker" promptText="Date of Birth"/>
-        <TextField fx:id="addressField" promptText="Address"/>
-        <TextField fx:id="classIdField" promptText="Class ID"/>
+        <TextField fx:id="nameField" layoutX="50" layoutY="70" promptText="Name"/>
+        <TextField fx:id="emailField" layoutX="50" layoutY="110" promptText="Email"/>
+        <TextField fx:id="phoneField" layoutX="50" layoutY="150" promptText="Phone"/>
 
-        <HBox spacing="10">
-            <Button text="Save" onAction="#saveStudent"/>
-            <Button text="Cancel" onAction="#cancelCreate"/>
-        </HBox>
-    </VBox>
+        <ComboBox fx:id="genderCombo" layoutX="50" layoutY="190" prefWidth="200"/>
+        <DatePicker fx:id="dobPicker" layoutX="50" layoutY="230"/>
+        <TextField fx:id="addressField" layoutX="50" layoutY="270" promptText="Address"/>
+
+        <ComboBox fx:id="classComboBox" layoutX="50" layoutY="310" prefWidth="200" promptText="Select Class"/>
+
+        <Button fx:id="saveButton" text="Save" layoutX="50" layoutY="360"/>
+        <Button fx:id="cancelButton" text="Cancel" layoutX="110" layoutY="360"/>
+    </children>
 </AnchorPane>
+

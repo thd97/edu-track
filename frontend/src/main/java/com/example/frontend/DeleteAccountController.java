@@ -41,10 +41,10 @@ public class DeleteAccountController {
                 HttpClient client = HttpClient.newHttpClient();
 
                 HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(ApiConstants.DELETE_ACCOUNT_API.replace(":id", accountToDelete.getId())))
-                .header("Authorization", "Bearer " + LoginController.userToken)
-                .DELETE()
-                .build();
+                        .uri(URI.create(ApiConstants.DELETE_ACCOUNT_API.replace(":id", accountToDelete.getId())))
+                        .header("Authorization", "Bearer " + LoginController.userToken)
+                        .DELETE()
+                        .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -56,12 +56,8 @@ public class DeleteAccountController {
             }
         };
 
-        task.setOnSucceeded(e -> {
-            showAlertAndReload("Xóa tài khoản thành công.");
-        });
-
+        task.setOnSucceeded(e -> showAlertAndReload("Xóa tài khoản thành công."));
         task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
-
         new Thread(task).start();
     }
 

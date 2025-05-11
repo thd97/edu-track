@@ -22,14 +22,15 @@ public class StudentsController {
 
     @FXML private TextField searchField;
     @FXML private ChoiceBox<String> choiceBox;
-    @FXML private TableView<StudentModel> studentsTable;
-    @FXML private TableColumn<StudentModel, String> idColumn;
+    @FXML private TableView<StudentModel> studentTable;
     @FXML private TableColumn<StudentModel, String> nameColumn;
     @FXML private TableColumn<StudentModel, String> emailColumn;
     @FXML private TableColumn<StudentModel, String> phoneNumberColumn;
     @FXML private TableColumn<StudentModel, String> addressColumn;
     @FXML private TableColumn<StudentModel, String> genderColumn;
     @FXML private TableColumn<StudentModel, String> dateOfBirthColumn;
+    @FXML private TableColumn<StudentModel, String> classNameColumn;
+
     @FXML private AnchorPane contentArea;
     @FXML private Button btnNew, btnUpdate, btnDelete;
 
@@ -47,15 +48,15 @@ public class StudentsController {
     }
 
     private void setupTable() {
-        idColumn.setCellValueFactory(cell -> cell.getValue().idProperty());
         nameColumn.setCellValueFactory(cell -> cell.getValue().nameProperty());
         emailColumn.setCellValueFactory(cell -> cell.getValue().emailProperty());
         phoneNumberColumn.setCellValueFactory(cell -> cell.getValue().phoneNumberProperty());
         addressColumn.setCellValueFactory(cell -> cell.getValue().addressProperty());
         genderColumn.setCellValueFactory(cell -> cell.getValue().genderProperty());
         dateOfBirthColumn.setCellValueFactory(cell -> cell.getValue().dateOfBirthProperty());
+        classNameColumn.setCellValueFactory(cell -> cell.getValue().classNameProperty());
 
-        studentsTable.setItems(studentsList);
+        studentTable.setItems(studentsList);
     }
 
     private void fetchStudents() {
@@ -64,8 +65,6 @@ public class StudentsController {
             protected List<StudentModel> call() throws Exception {
                 HttpClient client = HttpClient.newHttpClient();
                 String url = ApiConstants.GET_STUDENTS_API + "?limit=10&page=1";
-
-                System.out.println("Đang gọi API: " + url);
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
@@ -84,15 +83,22 @@ public class StudentsController {
 
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject item = dataArray.getJSONObject(i);
+                    JSONObject classObj = item.optJSONObject("clazz");
+
+                    String className = classObj != null ? classObj.optString("name", "") : "";
+
                     StudentModel student = new StudentModel(
                             item.optString("_id"),
-                            item.optString("name"),
+                            item.optString("fullName"),
                             item.optString("email"),
                             item.optString("phoneNumber"),
-                            item.optString("address"),
-                            item.optString("gender"),
-                            item.optString("dateOfBirth")
+                            item.optString("address", ""),
+                            item.optString("gender", ""),
+                            item.optString("dateOfBirth", ""),
+                            item.optString("classId", ""),   // <-- thêm dòng này
+                            className
                     );
+
                     list.add(student);
                 }
                 return list;
@@ -101,7 +107,6 @@ public class StudentsController {
 
         task.setOnSucceeded(e -> studentsList.setAll(task.getValue()));
         task.setOnFailed(e -> showAlert("Lỗi tải dữ liệu: " + task.getException().getMessage()));
-
         new Thread(task).start();
     }
 
@@ -125,7 +130,7 @@ public class StudentsController {
 
     @FXML
     private void handleUpdateStudent() {
-        StudentModel selected = studentsTable.getSelectionModel().getSelectedItem();
+        StudentModel selected = studentTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Vui lòng chọn học sinh để cập nhật.");
             return;
@@ -144,7 +149,7 @@ public class StudentsController {
 
     @FXML
     private void handleDeleteStudent() {
-        StudentModel selected = studentsTable.getSelectionModel().getSelectedItem();
+        StudentModel selected = studentTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Vui lòng chọn học sinh để xóa.");
             return;
@@ -167,7 +172,7 @@ public class StudentsController {
         String field = choiceBox.getValue();
 
         if (keyword.isEmpty() || field == null) {
-            studentsTable.setItems(studentsList);
+            studentTable.setItems(studentsList);
             return;
         }
 
@@ -182,6 +187,6 @@ public class StudentsController {
                 filtered.add(student);
             }
         }
-        studentsTable.setItems(filtered);
+        studentTable.setItems(filtered);
     }
 }

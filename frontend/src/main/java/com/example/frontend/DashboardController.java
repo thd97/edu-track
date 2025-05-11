@@ -59,9 +59,9 @@ public class DashboardController {
         btnAccounts.setOnAction(event -> loadAccounts());
         btnClasses.setOnAction(event -> loadClasses());
         btnTeachers.setOnAction(event -> loadData("/teachers"));
-        btnStudents.setOnAction(event -> loadData("/students"));
-        btnClasses.setOnAction(event -> loadData("/classes"));
-        btnExams.setOnAction(event -> loadData("/exams"));
+        btnStudents.setOnAction(event -> loadStudents());
+        btnClasses.setOnAction(event -> loadClasses());
+        btnExams.setOnAction(event -> loadExams());
         btnResults.setOnAction(event -> loadData("/results"));
         btnAttendance.setOnAction(event -> loadData("/attendance"));
         btnLogout.setOnAction(event -> logout());
@@ -89,6 +89,17 @@ public class DashboardController {
         }
     }
 
+    private void loadStudents() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/students.fxml"));
+            BorderPane studentsPane = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(studentsPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayText("Lỗi khi tải trang Students: " + e.getMessage());
+        }
+    }
     private void loadClasses() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/class.fxml"));
@@ -98,6 +109,17 @@ public class DashboardController {
         } catch (IOException e) {
             e.printStackTrace();
             displayText("Lỗi: " + e.getMessage());
+        }
+    }
+    private void loadExams() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/exam.fxml"));
+            BorderPane examPane = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(examPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayText("Lỗi khi tải trang Exam: " + e.getMessage());
         }
     }
 

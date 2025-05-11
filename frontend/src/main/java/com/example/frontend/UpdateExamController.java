@@ -36,8 +36,8 @@ public class UpdateExamController {
     private void updateExam() {
         Map<String, Object> updatedExam = new HashMap<>();
         updatedExam.put("name", nameField.getText());
-        updatedExam.put("examDate", examDatePicker.getValue().toString() + "T00:00:00.000Z");
-
+        updatedExam.put("examDate", examDatePicker.getValue().toString() );
+//        + "T00:00:00.000Z"
         String url = ApiConstants.UPDATE_EXAM_API.replace(":id", exam.getId());
 
         Task<Void> task = new Task<>() {

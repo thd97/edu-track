@@ -58,7 +58,6 @@ public class DeleteExamController {
 
         task.setOnSucceeded(e -> showAlertAndReload("Xóa kỳ thi thành công."));
         task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
-
         new Thread(task).start();
     }
 

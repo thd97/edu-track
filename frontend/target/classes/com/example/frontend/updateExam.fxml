@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.UpdateExamController">
+    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <Label text="Update Exam" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="nameField" promptText="Exam Name"/>
+        <DatePicker fx:id="examDatePicker" promptText="Exam Date"/>
+
+        <HBox spacing="10">
+            <Button text="Update" onAction="#updateExam"/>
+            <Button text="Cancel" onAction="#cancelUpdate"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

@@ -11,8 +11,12 @@ public class StudentModel {
     private final StringProperty address;
     private final StringProperty gender;
     private final StringProperty dateOfBirth;
+    private final StringProperty classId;
+    private final StringProperty className;
 
-    public StudentModel(String id, String name, String email, String phoneNumber, String address, String gender, String dateOfBirth) {
+    public StudentModel(String id, String name, String email, String phoneNumber,
+                        String address, String gender, String dateOfBirth,
+                        String classId, String className) {
         this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
         this.email = new SimpleStringProperty(email);
@@ -20,6 +24,8 @@ public class StudentModel {
         this.address = new SimpleStringProperty(address);
         this.gender = new SimpleStringProperty(gender);
         this.dateOfBirth = new SimpleStringProperty(dateOfBirth);
+        this.classId = new SimpleStringProperty(classId);
+        this.className = new SimpleStringProperty(className);
     }
 
     public String getId() { return id.get(); }
@@ -42,4 +48,10 @@ public class StudentModel {
 
     public String getDateOfBirth() { return dateOfBirth.get(); }
     public StringProperty dateOfBirthProperty() { return dateOfBirth; }
+
+    public String getClassId() { return classId.get(); }
+    public StringProperty classIdProperty() { return classId; }
+
+    public String getClassName() { return className.get(); }
+    public StringProperty classNameProperty() { return className; }
 }
