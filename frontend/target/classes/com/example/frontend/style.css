@@ -1,9 +1,0 @@
-.transparent-button {
-    -fx-background-color: transparent;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10;
-}
-
-.transparent-button:hover {
-    -fx-background-color: #EDEDED;
-}
