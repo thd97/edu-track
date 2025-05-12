@@ -68,15 +68,15 @@ public class NewAccountController {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() != 201) {
-                    throw new RuntimeException("Lỗi khi tạo tài khoản: " + response.body());
+                    throw new RuntimeException("Error creating account: " + response.body());
                 }
 
                 return null;
             }
         };
 
-        task.setOnSucceeded(e -> showAlertWithRedirect("Tạo tài khoản thành công."));
-        task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
+        task.setOnSucceeded(e -> showAlertWithRedirect("Account created successfully."));
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
 
         new Thread(task).start();
     }
@@ -91,18 +91,18 @@ public class NewAccountController {
             if (rootPane != null) {
                 rootPane.getChildren().setAll(accountRoot);
             } else {
-                System.out.println("Không tìm thấy contentArea!");
+                System.out.println("Cannot find contentArea!");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Lỗi khi hủy tạo tài khoản.");
+            showAlert("Error canceling account creation.");
         }
     }
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText("Message");
         alert.setContentText(message);
         alert.showAndWait();
@@ -110,7 +110,7 @@ public class NewAccountController {
 
     private void showAlertWithRedirect(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText("Message");
         alert.setContentText(message);
 
@@ -123,11 +123,11 @@ public class NewAccountController {
                     if (rootPane != null) {
                         rootPane.getChildren().setAll(accountRoot);
                     } else {
-                        System.out.println("Không tìm thấy contentArea!");
+                        System.out.println("Cannot find contentArea!");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    showAlert("Lỗi khi quay về danh sách tài khoản.");
+                    showAlert("Error returning to account list.");
                 }
             }
         });

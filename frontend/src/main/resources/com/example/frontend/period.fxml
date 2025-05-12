@@ -22,7 +22,7 @@
                     <!-- Table -->
                     <TableView fx:id="periodTable" prefHeight="500.0" prefWidth="800.0">
                         <columns>
-                            <TableColumn fx:id="idColumn" text="ID" prefWidth="150.0" />
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
                             <TableColumn fx:id="periodNumberColumn" text="Period #" prefWidth="100.0" />
                             <TableColumn fx:id="startTimeColumn" text="Start Time" prefWidth="200.0" />
                             <TableColumn fx:id="endTimeColumn" text="End Time" prefWidth="200.0" />

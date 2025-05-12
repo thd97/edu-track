@@ -14,7 +14,6 @@
                 <!-- Menu buttons -->
                 <VBox spacing="10" stylesheets="@style.css">
                     <Button fx:id="btnAccounts" text="Accounts" styleClass="transparent-button" />
-                    <Button fx:id="btnTeachers" text="Teachers" styleClass="transparent-button" />
                     <Button fx:id="btnStudents" text="Students" styleClass="transparent-button" />
                     <Button fx:id="btnClasses" text="Classes" styleClass="transparent-button" />
                     <Button fx:id="btnExams" text="Exams" styleClass="transparent-button" />
@@ -34,29 +33,6 @@
     <center>
         <VBox fx:id="tableView" spacing="20" style="-fx-padding: 30;">
             <children>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Active issues" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                </HBox>
-
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <!-- Search field -->
-                    <HBox spacing="5" alignment="CENTER_LEFT" style="-fx-background-color: #F5F5F5; -fx-padding: 6 10 6 10; -fx-background-radius: 5; -fx-border-color: #CCC; -fx-border-radius: 5;">
-                        <Label text="🔍" />
-                        <TextField fx:id="txtSearch" promptText="Search tickets..." style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                    </HBox>
-
-                    <!-- Filter button -->
-                    <Button fx:id="btnFilter" text="Filter" style="-fx-background-color: #F5F5F5; -fx-background-radius: 5; -fx-border-color: #CCC; -fx-border-radius: 5; -fx-padding: 6 16;" />
-
-                    <!-- Spacer -->
-                    <Region HBox.hgrow="ALWAYS" />
-
-                    <!-- View buttons -->
-                    <Button fx:id="btnListView" text="☰" style="-fx-background-color: transparent; -fx-font-size: 16px;" />
-                    <Button fx:id="btnCalendarView" text="📅" style="-fx-background-color: transparent; -fx-font-size: 16px;" />
-                </HBox>
-
-                <!-- Content placeholder -->
                 <AnchorPane fx:id="contentArea" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
             </children>
         </VBox>

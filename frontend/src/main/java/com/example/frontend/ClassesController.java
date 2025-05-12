@@ -22,7 +22,7 @@ import java.util.List;
 public class ClassesController {
 
     @FXML
-    private TableView<ClassModel> classTable;
+    private TableView<ClassModel> classesTable;
 
     @FXML
     private TableColumn<ClassModel, String> idColumn;
@@ -31,27 +31,18 @@ public class ClassesController {
     private TableColumn<ClassModel, String> nameColumn;
 
     @FXML
-    private TableColumn<ClassModel, String> codeColumn;
+    private TableColumn<ClassModel, String> teacherNameColumn;
 
     @FXML
-    private TableColumn<ClassModel, String> descriptionColumn;
-
-    @FXML
-    private TableColumn<ClassModel, String> createdAtColumn;
-
-    @FXML
-    private TableColumn<ClassModel, String> updatedAtColumn;
+    private TableColumn<ClassModel, String> totalStudentColumn;
 
     @FXML
     private AnchorPane contentArea;
 
     @FXML
-    private ComboBox<String> choiceBox;
+    private ComboBox<ChoiceItem> choiceBox;
 
     @FXML private Button btnNew, btnUpdate, btnDelete;
-
-    @FXML
-    private TableView<ClassModel> classesTable;
 
     @FXML
     private TextField searchField;
@@ -60,7 +51,11 @@ public class ClassesController {
 
     @FXML
     public void initialize() {
-        choiceBox.setItems(FXCollections.observableArrayList("name", "code", "description"));
+        choiceBox.setItems(FXCollections.observableArrayList(
+            new ChoiceItem("Class Name", "name"),
+            new ChoiceItem("Teacher Name", "teacherName")
+        ));
+        choiceBox.setValue(choiceBox.getItems().get(0));
         setupTable();
         fetchClasses();
 
@@ -72,10 +67,8 @@ public class ClassesController {
     private void setupTable() {
         idColumn.setCellValueFactory(cell -> cell.getValue().idProperty());
         nameColumn.setCellValueFactory(cell -> cell.getValue().nameProperty());
-        codeColumn.setCellValueFactory(cell -> cell.getValue().codeProperty());
-        descriptionColumn.setCellValueFactory(cell -> cell.getValue().descriptionProperty());
-        createdAtColumn.setCellValueFactory(cell -> cell.getValue().createdAtProperty());
-        updatedAtColumn.setCellValueFactory(cell -> cell.getValue().updatedAtProperty());
+        teacherNameColumn.setCellValueFactory(cell -> cell.getValue().teacherNameProperty());
+        totalStudentColumn.setCellValueFactory(cell -> cell.getValue().totalStudentProperty());
 
         classesTable.setItems(classesList);
     }
@@ -85,51 +78,38 @@ public class ClassesController {
             @Override
             protected List<ClassModel> call() throws Exception {
                 HttpClient client = HttpClient.newHttpClient();
-                String url = ApiConstants.GET_CLASSES_API + "?limit=10&page=1";
-
-                System.out.println("Đang gọi API: " + url);  // In log kiểm tra URL
-
+                String url = ApiConstants.GET_CLASSES_API + "?limit=100&page=1";
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
                         .header("Authorization", "Bearer " + LoginController.userToken)
                         .GET()
                         .build();
-
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                System.out.println("Status code: " + response.statusCode());
-                System.out.println("Response body: " + response.body());
-
-                if (response.statusCode() == 200) {
-                    JSONObject jsonResponse = new JSONObject(response.body());
-                    JSONArray dataArray = jsonResponse.getJSONArray("data");
-
-                    List<ClassModel> list = new ArrayList<>();
-                    for (int i = 0; i < dataArray.length(); i++) {
-                        JSONObject item = dataArray.getJSONObject(i);
-                        ClassModel classModel = new ClassModel(
-                                item.optString("_id"),
-                                item.optString("name"),
-                                item.optString("code"),
-                                item.optString("description"),
-                                item.optString("createdAt"),
-                                item.optString("updatedAt")
-                        );
-                        list.add(classModel);
-                    }
-                    return list;
-                } else {
-                    throw new RuntimeException("Lỗi HTTP: " + response.statusCode());
+                JSONObject jsonResponse = new JSONObject(response.body());
+                JSONArray dataArray = jsonResponse.getJSONArray("data");
+                List<ClassModel> list = new ArrayList<>();
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject item = dataArray.getJSONObject(i);
+                    JSONObject teacherObj = item.optJSONObject("teacher");
+                    String teacherName = teacherObj != null ? teacherObj.optString("fullName", "") : "";
+                    int totalStudent = item.has("totalStudent") ? item.getInt("totalStudent") : 0;
+                    ClassModel classModel = new ClassModel(
+                        item.optString("_id"),
+                        item.optString("name"),
+                        "",
+                        "",
+                        item.optString("createdAt", ""),
+                        item.optString("updatedAt", ""),
+                        teacherName,
+                        String.valueOf(totalStudent)
+                    );
+                    list.add(classModel);
                 }
+                return list;
             }
         };
-
         task.setOnSucceeded(e -> classesList.setAll(task.getValue()));
-        task.setOnFailed(e -> {
-            Throwable exception = task.getException();
-            exception.printStackTrace();
-            showAlert("Lỗi: " + exception.getMessage());
-        });
-
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
         new Thread(task).start();
     }
 
@@ -141,7 +121,7 @@ public class ClassesController {
             contentArea.getChildren().setAll(newPage);
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể mở trang tạo tài khoản.");
+            showAlert("Cannot open new account page.");
         }
     }
     
@@ -149,7 +129,7 @@ public class ClassesController {
     private void handleUpdateClass() {
         ClassModel selected = classesTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Vui lòng chọn một tài khoản để cập nhật.");
+            showAlert("Please select a class to update.");
             return;
         }
 
@@ -162,36 +142,16 @@ public class ClassesController {
 
             contentArea.getChildren().setAll(updatePage);
         } catch (IOException e) {
-            showAlert("Không thể mở trang cập nhật tài khoản.");
+            e.printStackTrace();
+            System.out.println(e);
+            // showAlert(e);
         }
     }
-
-    // @FXML
-    // private void updateClass() {
-    //     ClassModel selected = classTable.getSelectionModel().getSelectedItem();
-    //     if (selected == null) {
-    //         showAlert("Vui lòng chọn lớp để cập nhật.");
-    //         return;
-    //     }
-
-    //     try {
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("updateClass.fxml"));
-    //         Parent updatePage = loader.load();
-    //         UpdateClassController controller = loader.getController();
-    //         controller.setClassModel(selected);
-
-    //         contentArea.getChildren().setAll(updatePage);
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         showAlert("Không thể mở trang cập nhật lớp.");
-    //     }
-    // }
-
     @FXML
     private void handleDeleteClass() {
         ClassModel selected = classesTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Vui lòng chọn một tài khoản để xóa.");
+            showAlert("Please select a class to delete.");
             return;
         }
     
@@ -205,34 +165,30 @@ public class ClassesController {
             contentArea.getChildren().setAll(deletePage);
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể mở trang xác nhận xóa.");
+            showAlert("Cannot open delete confirmation page.");
         }
     }
 
     @FXML
     private void handleSearch() {
         String keyword = searchField.getText().trim().toLowerCase();
-        String field = choiceBox.getValue();
-
+        ChoiceItem selected = choiceBox.getValue();
+        String field = selected != null ? selected.getValue() : null;
         if (keyword.isEmpty() || field == null) {
             classesTable.setItems(classesList);
             return;
         }
-
         ObservableList<ClassModel> filtered = FXCollections.observableArrayList();
-
-        for (ClassModel acc : classesList) {
+        for (ClassModel cls : classesList) {
             String value = switch (field) {
-                case "id" -> acc.getId();
-                case "code" -> acc.getCode();
-                case "description" -> acc.getDescription();
+                case "name" -> cls.getName();
+                case "teacherName" -> cls.getTeacherName();
                 default -> "";
             };
             if (value.toLowerCase().contains(keyword)) {
-                filtered.add(acc);
+                filtered.add(cls);
             }
         }
-
         classesTable.setItems(filtered);
     }
 
@@ -248,9 +204,21 @@ public class ClassesController {
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static class ChoiceItem {
+        private final String label;
+        private final String value;
+        public ChoiceItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+        @Override
+        public String toString() { return label; }
+        public String getValue() { return value; }
     }
 }

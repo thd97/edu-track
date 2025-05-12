@@ -7,14 +7,12 @@
     <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
         <Label text="Update Class" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-
-        <TextField fx:id="nameField" promptText="Class Name"/>
-        <TextField fx:id="codeField" promptText="Class Code"/>
-        <TextField fx:id="descriptionField" promptText="Description"/>
+        <Label text="Class Name"/><TextField fx:id="nameField" promptText="Class Name"/>
+        <Label text="Teacher"/><ComboBox fx:id="teacherComboBox" promptText="Select Teacher"/>
 
         <HBox spacing="10">
-            <Button text="Update" onAction="#updateClass"/>
-            <Button text="Cancel" onAction="#cancelUpdate"/>
+            <Button fx:id="btnUpdate" text="Update" onAction="#updateClass"/>
+            <Button fx:id="btnCancel" text="Cancel" onAction="#cancelUpdate"/>
         </HBox>
     </VBox>
 </AnchorPane>

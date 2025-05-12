@@ -75,7 +75,7 @@ public class UpdateAccountController {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() != 200) {
-                    throw new RuntimeException("Lỗi khi cập nhật tài khoản: " + response.body());
+                    throw new RuntimeException("Error updating account: " + response.body());
                 }
 
                 return null;
@@ -84,14 +84,14 @@ public class UpdateAccountController {
 
         task.setOnSucceeded(e -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setContentText("Cập nhật tài khoản thành công.");
+            alert.setTitle("Notification");
+            alert.setContentText("Account updated successfully.");
             alert.showAndWait();
 
             loadAccountView();
         });
 
-        task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
 
         new Thread(task).start();
     }
@@ -107,20 +107,16 @@ public class UpdateAccountController {
             Parent accountPage = loader.load();
 
             AnchorPane content = (AnchorPane) fullNameField.getScene().lookup("#contentArea");
-            if (content != null) {
-                content.getChildren().setAll(accountPage);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+            content.getChildren().setAll(accountPage);
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể quay về trang account.");
+            showAlert("Cannot back to account.");
         }
     }
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setContentText(message);
         alert.showAndWait();
     }

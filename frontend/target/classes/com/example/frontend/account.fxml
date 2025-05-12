@@ -20,14 +20,15 @@
                     <Label text="Accounts" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
                     <HBox spacing="10">
+                        <ChoiceBox fx:id="roleChoiceBox" prefWidth="120.0" />
                         <ChoiceBox fx:id="choiceBox" prefWidth="150.0" />
-                        <TextField fx:id="searchField" promptText="Tìm kiếm..." prefWidth="200.0"/>
-                        <Button text="Tìm" onAction="#handleSearch"/>
+                        <TextField fx:id="searchField" promptText="Input keyword..." prefWidth="200.0"/>
+                        <Button text="Filter" onAction="#handleSearch"/>
                     </HBox>
 
                     <TableView fx:id="accountsTable" prefHeight="500.0" prefWidth="800.0">
                         <columns>
-                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" />
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
                             <TableColumn fx:id="fullNameColumn" text="Fullname" prefWidth="150.0" />
                             <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150.0" />
                             <TableColumn fx:id="passwordColumn" text="Password" prefWidth="150.0" />

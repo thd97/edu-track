@@ -5,7 +5,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DeleteStudentController">
     <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
         <Label text="Delete Student?" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-        <Label fx:id="studentInfoLabel" wrapText="true"/>
+        <Label fx:id="confirmLabel" wrapText="true"/>
 
         <HBox spacing="10">
             <Button text="Confirm" onAction="#confirmDelete"/>

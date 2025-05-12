@@ -28,7 +28,6 @@ import org.json.JSONObject;
 public class DashboardController {
 
     @FXML private Button btnAccounts;
-    @FXML private Button btnTeachers;
     @FXML private Button btnStudents;
     @FXML private Button btnClasses;
     @FXML private Button btnExams;
@@ -36,11 +35,6 @@ public class DashboardController {
     @FXML private Button btnPeriod;
     @FXML private Button btnLogout;
     @FXML private AnchorPane contentArea;
-
-    @FXML private Button btnFilter;
-    @FXML private Button btnListView;
-    @FXML private Button btnCalendarView;
-    @FXML private TextField txtSearch;
 
     private String apiUrl;
 
@@ -52,22 +46,22 @@ public class DashboardController {
         if ("teacher".equalsIgnoreCase(LoginController.userRole)) {
             btnAccounts.setVisible(false);
             btnAccounts.setManaged(false);
-            btnTeachers.setVisible(false);
-            btnTeachers.setManaged(false);
         }
 
         btnAccounts.setOnAction(event -> loadAccounts());
         btnClasses.setOnAction(event -> loadClasses());
-        btnTeachers.setOnAction(event -> loadData("/teachers"));
         btnStudents.setOnAction(event -> loadStudents());
         btnClasses.setOnAction(event -> loadClasses());
         btnExams.setOnAction(event -> loadExams());
         btnResults.setOnAction(event -> loadData("/results"));
         btnPeriod.setOnAction(event -> loadPeriod());
         btnLogout.setOnAction(event -> logout());
-        btnFilter.setOnAction(event -> txtSearch.clear());
 
-        displayText("Welcome to the Dashboard!");
+        if (!"teacher".equalsIgnoreCase(LoginController.userRole)) {
+            loadAccounts();
+        } else {
+            displayText("Welcome to the Dashboard!");
+        }
     }
 
     private void displayText(String content) {
@@ -85,7 +79,7 @@ public class DashboardController {
             contentArea.getChildren().add(accountPane);
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi: " + e.getMessage());
+            displayText("Error: " + e.getMessage());
         }
     }
 
@@ -97,7 +91,7 @@ public class DashboardController {
             contentArea.getChildren().add(studentsPane);
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi khi tải trang Students: " + e.getMessage());
+            displayText("Error loading Students page: " + e.getMessage());
         }
     }
     private void loadClasses() {
@@ -108,7 +102,7 @@ public class DashboardController {
             contentArea.getChildren().add(classesPane);
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi: " + e.getMessage());
+            displayText("Error: " + e.getMessage());
         }
     }
     private void loadExams() {
@@ -119,7 +113,7 @@ public class DashboardController {
             contentArea.getChildren().add(examPane);
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi khi tải trang Exam: " + e.getMessage());
+            displayText("Error loading Exam page: " + e.getMessage());
         }
     }
     private void loadPeriod() {
@@ -130,7 +124,7 @@ public class DashboardController {
             contentArea.getChildren().add(periodPane);
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi khi tải trang Period: " + e.getMessage());
+            displayText("Error loading Period page: " + e.getMessage());
         }
     }
     private void loadData(String endpoint) {
@@ -150,7 +144,7 @@ public class DashboardController {
 
         task.setOnFailed(e -> {
             Throwable ex = task.getException();
-            displayText("Lỗi: " + (ex != null ? ex.getMessage() : "Không rõ nguyên nhân"));
+            displayText("Error: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
 
         new Thread(task).start();
@@ -165,7 +159,7 @@ public class DashboardController {
                 return new Gson().fromJson(reader, new TypeToken<List<MyDataModel>>(){}.getType());
             }
         } else {
-            throw new RuntimeException("Lỗi HTTP: " + connection.getResponseCode());
+            throw new RuntimeException("HTTP Error: " + connection.getResponseCode());
         }
     }
 
@@ -191,7 +185,7 @@ public class DashboardController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            displayText("Lỗi đăng xuất: " + e.getMessage());
+            displayText("Logout error: " + e.getMessage());
         }
     }
 }

@@ -94,7 +94,7 @@ public class NewStudentController {
             studentJson.put("gender", gender);
             studentJson.put("dateOfBirth", dob);
             studentJson.put("address", address);
-            studentJson.put("classId", classId);
+            studentJson.put("class", classId);
 
             URL url = new URL("http://localhost:3004/api/students");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

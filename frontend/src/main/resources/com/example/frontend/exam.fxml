@@ -22,7 +22,7 @@
                     <!-- Table -->
                     <TableView fx:id="examTable" prefHeight="500.0" prefWidth="800.0">
                         <columns>
-                            <TableColumn fx:id="idColumn" text="ID" prefWidth="150.0" />
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
                             <TableColumn fx:id="nameColumn" text="Exam Name" prefWidth="250.0" />
                             <TableColumn fx:id="examDateColumn" text="Exam Date" prefWidth="200.0" />
                         </columns>

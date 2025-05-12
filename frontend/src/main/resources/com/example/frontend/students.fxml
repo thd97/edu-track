@@ -9,7 +9,7 @@
             fx:controller="com.example.frontend.StudentsController">
 
     <center>
-        <AnchorPane fx:id="contentArea" prefHeight="600.0" prefWidth="1000.0">
+        <AnchorPane fx:id="contentArea" prefHeight="600.0" prefWidth="800.0">
             <children>
                 <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -21,22 +21,20 @@
 
                     <HBox spacing="10">
                         <ChoiceBox fx:id="choiceBox" prefWidth="150"/>
-                        <TextField fx:id="searchField" promptText="Tìm kiếm..." prefWidth="200"/>
-                        <Button text="Tìm" onAction="#handleSearch"/>
+                        <TextField fx:id="searchField" promptText="Input keyword..." prefWidth="200"/>
+                        <Button text="Filter" onAction="#handleSearch"/>
                     </HBox>
 
-                    <TableView fx:id="studentTable" prefHeight="450.0" prefWidth="950.0">
+                    <TableView fx:id="studentTable" prefHeight="500.0" prefWidth="800.0">
                         <columns>
-                            <!-- ẨN idColumn và classIdColumn -->
-                            <!-- Không cần fx:id="idColumn" và "classIdColumn" nữa -->
-
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
                             <TableColumn fx:id="nameColumn" text="Full Name" prefWidth="150"/>
-                            <TableColumn fx:id="emailColumn" text="Email" prefWidth="150"/>
-                            <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="120"/>
+                            <TableColumn fx:id="classNameColumn" text="Class Name" prefWidth="120"/>
                             <TableColumn fx:id="genderColumn" text="Gender" prefWidth="80"/>
                             <TableColumn fx:id="dateOfBirthColumn" text="Date of Birth" prefWidth="120"/>
                             <TableColumn fx:id="addressColumn" text="Address" prefWidth="150"/>
-                            <TableColumn fx:id="classNameColumn" text="Class Name" prefWidth="120"/>
+                            <TableColumn fx:id="emailColumn" text="Email" prefWidth="150"/>
+                            <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="120"/>
                         </columns>
                     </TableView>
 

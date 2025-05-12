@@ -22,7 +22,7 @@ import java.util.List;
 
 public class AccountsController {
 
-    @FXML private ChoiceBox<String> choiceBox;
+    @FXML private ChoiceBox<ChoiceItem> choiceBox;
     @FXML private TextField searchField;
     @FXML private TableView<Account> accountsTable;
 
@@ -38,11 +38,19 @@ public class AccountsController {
     @FXML private Button btnNew, btnUpdate, btnDelete;
     @FXML private AnchorPane contentArea;
 
+    @FXML private ChoiceBox<String> roleChoiceBox;
+
     private ObservableList<Account> accountsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        choiceBox.setItems(FXCollections.observableArrayList("fullname", "username"));
+        choiceBox.setItems(FXCollections.observableArrayList(
+            new ChoiceItem("Fullname", "fullname"),
+            new ChoiceItem("Username", "username")
+        ));
+        choiceBox.setValue(choiceBox.getItems().get(0));
+        roleChoiceBox.setItems(FXCollections.observableArrayList("All role", "admin", "teacher"));
+        roleChoiceBox.setValue("All role");
         setupTable();
         fetchAccounts();
 
@@ -92,21 +100,21 @@ public class AccountsController {
                             item.has("password") ? item.getString("password") : "******",
                             item.getString("email"),
                             item.getString("role"),
-                            item.getString("phoneNumber"),
-                            item.getString("gender")
+                            item.has("phoneNumber") ? item.getString("phoneNumber") : "",
+                            item.has("gender") ? item.getString("gender") : ""
                         );
                         list.add(account);
                     }
 
                     return list;
                 } else {
-                    throw new RuntimeException("Lỗi khi tải danh sách tài khoản: " + response.body());
+                    throw new RuntimeException("Error loading account list: " + response.body());
                 }
             }
         };
 
         task.setOnSucceeded(e -> accountsList.setAll(task.getValue()));
-        task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
 
         new Thread(task).start();
     }
@@ -119,7 +127,7 @@ public class AccountsController {
             contentArea.getChildren().setAll(newPage);
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể mở trang tạo tài khoản.");
+            showAlert("Cannot open account creation page.");
         }
     }
 
@@ -127,7 +135,7 @@ public class AccountsController {
     private void handleUpdateAccount() {
         Account selected = accountsTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Vui lòng chọn một tài khoản để cập nhật.");
+            showAlert("Please select an account to update.");
             return;
         }
 
@@ -140,7 +148,7 @@ public class AccountsController {
 
             contentArea.getChildren().setAll(updatePage);
         } catch (IOException e) {
-            showAlert("Không thể mở trang cập nhật tài khoản.");
+            showAlert("Cannot open account update page.");
         }
     }
 
@@ -148,7 +156,7 @@ public class AccountsController {
     private void handleDeleteAccount() {
         Account selected = accountsTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Vui lòng chọn một tài khoản để xóa.");
+            showAlert("Please select an account to delete.");
             return;
         }
     
@@ -162,40 +170,85 @@ public class AccountsController {
             contentArea.getChildren().setAll(deletePage);
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể mở trang xác nhận xóa.");
+            showAlert("Cannot open delete confirmation page.");
         }
     }
 
     @FXML
     private void handleSearch() {
-        String keyword = searchField.getText().trim().toLowerCase();
-        String field = choiceBox.getValue();
+        String keyword = searchField.getText().trim();
+        ChoiceItem selected = choiceBox.getValue();
+        String field = selected != null ? selected.getValue() : null;
+        String roleValue = roleChoiceBox.getValue();
+        final String role = "All role".equals(roleValue) ? "" : roleValue;
 
-        if (keyword.isEmpty() || field == null) {
-            accountsTable.setItems(accountsList);
-            return;
-        }
-
-        ObservableList<Account> filtered = FXCollections.observableArrayList();
-
-        for (Account acc : accountsList) {
-            String value = switch (field) {
-                case "fullname" -> acc.getFullname();
-                case "username" -> acc.getUsername();
-                default -> "";
-            };
-            if (value.toLowerCase().contains(keyword)) {
-                filtered.add(acc);
+        Task<List<Account>> task = new Task<>() {
+            @Override
+            protected List<Account> call() throws Exception {
+                HttpClient client = HttpClient.newHttpClient();
+                JSONObject body = new JSONObject();
+                if (field != null && !keyword.isEmpty()) {
+                    body.put(field, keyword);
+                }
+                if (role != null && !role.isEmpty()) {
+                    body.put("role", role);
+                }
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(ApiConstants.BASE_URL + "/api/users/filter"))
+                        .header("Authorization", "Bearer " + LoginController.userToken)
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                        .build();
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    JSONObject json = new JSONObject(response.body());
+                    JSONArray dataArray = json.getJSONArray("data");
+                    List<Account> list = new ArrayList<>();
+                    for (int i = 0; i < dataArray.length(); i++) {
+                        JSONObject item = dataArray.getJSONObject(i);
+                        Account account = new Account(
+                            item.getString("_id"),
+                            item.getString("fullName"),
+                            item.getString("username"),
+                            item.has("password") ? item.getString("password") : "******",
+                            item.getString("email"),
+                            item.getString("role"),
+                            item.has("phoneNumber") ? item.getString("phoneNumber") : "",
+                            item.has("gender") ? item.getString("gender") : ""
+                        );
+                        list.add(account);
+                    }
+                    return list;
+                } else {
+                    throw new RuntimeException("Error filtering accounts: " + response.body());
+                }
             }
-        }
-
-        accountsTable.setItems(filtered);
+        };
+        task.setOnSucceeded(e -> accountsTable.setItems(FXCollections.observableArrayList(task.getValue())));
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
+        new Thread(task).start();
     }
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static class ChoiceItem {
+        private final String label;
+        private final String value;
+        public ChoiceItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+        @Override
+        public String toString() {
+            return label;
+        }
+        public String getValue() {
+            return value;
+        }
     }
 }

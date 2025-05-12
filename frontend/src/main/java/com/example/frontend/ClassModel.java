@@ -10,14 +10,18 @@ public class ClassModel {
     private final StringProperty description;
     private final StringProperty createdAt;
     private final StringProperty updatedAt;
+    private final StringProperty teacherName;
+    private final StringProperty totalStudent;
 
-    public ClassModel(String id, String name, String code, String description, String createdAt, String updatedAt) {
+    public ClassModel(String id, String name, String code, String description, String createdAt, String updatedAt, String teacherName, String totalStudent) {
         this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
         this.code = new SimpleStringProperty(code);
         this.description = new SimpleStringProperty(description);
         this.createdAt = new SimpleStringProperty(createdAt);
         this.updatedAt = new SimpleStringProperty(updatedAt);
+        this.teacherName = new SimpleStringProperty(teacherName);
+        this.totalStudent = new SimpleStringProperty(totalStudent);
     }
 
     public String getId() {
@@ -90,5 +94,29 @@ public class ClassModel {
 
     public StringProperty updatedAtProperty() {
         return updatedAt;
+    }
+
+    public String getTeacherName() {
+        return teacherName.get();
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName.set(teacherName);
+    }
+
+    public StringProperty teacherNameProperty() {
+        return teacherName;
+    }
+
+    public String getTotalStudent() {
+        return totalStudent.get();
+    }
+
+    public void setTotalStudent(String totalStudent) {
+        this.totalStudent.set(totalStudent);
+    }
+
+    public StringProperty totalStudentProperty() {
+        return totalStudent;
     }
 }

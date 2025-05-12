@@ -6,20 +6,20 @@
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.frontend.NewStudentController">
     <children>
-        <Label text="Create New Student" layoutX="50" layoutY="30"/>
-
-        <TextField fx:id="nameField" layoutX="50" layoutY="70" promptText="Name"/>
-        <TextField fx:id="emailField" layoutX="50" layoutY="110" promptText="Email"/>
-        <TextField fx:id="phoneField" layoutX="50" layoutY="150" promptText="Phone"/>
-
-        <ComboBox fx:id="genderCombo" layoutX="50" layoutY="190" prefWidth="200"/>
-        <DatePicker fx:id="dobPicker" layoutX="50" layoutY="230"/>
-        <TextField fx:id="addressField" layoutX="50" layoutY="270" promptText="Address"/>
-
-        <ComboBox fx:id="classComboBox" layoutX="50" layoutY="310" prefWidth="200" promptText="Select Class"/>
-
-        <Button fx:id="saveButton" text="Save" layoutX="50" layoutY="360"/>
-        <Button fx:id="cancelButton" text="Cancel" layoutX="110" layoutY="360"/>
+        <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+            <Label text="Create New Student" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Label text="Name"/><TextField fx:id="nameField" promptText="Name"/>
+            <Label text="Email"/><TextField fx:id="emailField" promptText="Email"/>
+            <Label text="Phone"/><TextField fx:id="phoneField" promptText="Phone"/>
+            <Label text="Gender"/><ComboBox fx:id="genderCombo" prefWidth="200"/>
+            <Label text="Date of Birth"/><DatePicker fx:id="dobPicker"/>
+            <Label text="Address"/><TextField fx:id="addressField" promptText="Address"/>
+            <Label text="Class"/><ComboBox fx:id="classComboBox" prefWidth="200" promptText="Select Class"/>
+            <HBox spacing="10">
+                <Button fx:id="saveButton" text="Save"/>
+                <Button fx:id="cancelButton" text="Cancel"/>
+            </HBox>
+        </VBox>
     </children>
 </AnchorPane>
 

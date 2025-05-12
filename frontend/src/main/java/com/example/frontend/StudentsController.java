@@ -21,7 +21,7 @@ import java.util.List;
 public class StudentsController {
 
     @FXML private TextField searchField;
-    @FXML private ChoiceBox<String> choiceBox;
+    @FXML private ChoiceBox<ChoiceItem> choiceBox;
     @FXML private TableView<StudentModel> studentTable;
     @FXML private TableColumn<StudentModel, String> nameColumn;
     @FXML private TableColumn<StudentModel, String> emailColumn;
@@ -38,7 +38,12 @@ public class StudentsController {
 
     @FXML
     public void initialize() {
-        choiceBox.setItems(FXCollections.observableArrayList("name", "email"));
+        choiceBox.setItems(FXCollections.observableArrayList(
+            new ChoiceItem("Name", "name"),
+            new ChoiceItem("Email", "email")
+        ));
+        choiceBox.setValue(choiceBox.getItems().get(0));
+
         setupTable();
         fetchStudents();
 
@@ -64,7 +69,7 @@ public class StudentsController {
             @Override
             protected List<StudentModel> call() throws Exception {
                 HttpClient client = HttpClient.newHttpClient();
-                String url = ApiConstants.GET_STUDENTS_API + "?limit=10&page=1";
+                String url = ApiConstants.GET_STUDENTS_API + "?limit=100&page=1";
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
@@ -83,10 +88,9 @@ public class StudentsController {
 
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject item = dataArray.getJSONObject(i);
-                    JSONObject classObj = item.optJSONObject("clazz");
-
+                    JSONObject classObj = item.optJSONObject("class");
                     String className = classObj != null ? classObj.optString("name", "") : "";
-
+                    String classId = classObj != null ? classObj.optString("_id", "") : "";
                     StudentModel student = new StudentModel(
                             item.optString("_id"),
                             item.optString("fullName"),
@@ -95,10 +99,9 @@ public class StudentsController {
                             item.optString("address", ""),
                             item.optString("gender", ""),
                             item.optString("dateOfBirth", ""),
-                            item.optString("classId", ""),   // <-- thêm dòng này
+                            classId,
                             className
                     );
-
                     list.add(student);
                 }
                 return list;
@@ -169,7 +172,8 @@ public class StudentsController {
     @FXML
     private void handleSearch() {
         String keyword = searchField.getText().trim().toLowerCase();
-        String field = choiceBox.getValue();
+        ChoiceItem selected = choiceBox.getValue();
+        String field = selected != null ? selected.getValue() : null;
 
         if (keyword.isEmpty() || field == null) {
             studentTable.setItems(studentsList);
@@ -188,5 +192,21 @@ public class StudentsController {
             }
         }
         studentTable.setItems(filtered);
+    }
+
+    public static class ChoiceItem {
+        private final String label;
+        private final String value;
+        public ChoiceItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+        @Override
+        public String toString() {
+            return label;
+        }
+        public String getValue() {
+            return value;
+        }
     }
 }

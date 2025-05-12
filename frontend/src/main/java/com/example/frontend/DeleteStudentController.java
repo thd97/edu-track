@@ -19,7 +19,7 @@ public class DeleteStudentController {
 
     public void setStudent(StudentModel student) {
         this.student = student;
-        confirmLabel.setText("Bạn có chắc muốn xóa học sinh: " + student.getName() + "?");
+        confirmLabel.setText("Are you sure you want to delete student: " + student.getName() + "?");
     }
 
     @FXML
@@ -38,17 +38,17 @@ public class DeleteStudentController {
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() != 200) {
-                    throw new RuntimeException("Lỗi khi xóa học sinh: " + response.body());
+                    throw new RuntimeException("Error deleting student: " + response.body());
                 }
                 return null;
             }
         };
 
         task.setOnSucceeded(e -> {
-            showAlert("Xóa học sinh thành công.");
+            showAlert("Student deleted successfully.");
             returnToStudentList();
         });
-        task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
+        task.setOnFailed(e -> showAlert("Error: " + task.getException().getMessage()));
 
         new Thread(task).start();
     }
@@ -60,7 +60,7 @@ public class DeleteStudentController {
 
     private void returnToStudentList() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/student.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/students.fxml"));
             Parent root = loader.load();
             AnchorPane contentArea = (AnchorPane) confirmLabel.getScene().lookup("#contentArea");
             if (contentArea != null) {
@@ -73,7 +73,7 @@ public class DeleteStudentController {
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setContentText(message);
         alert.showAndWait();
     }

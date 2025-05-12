@@ -33,7 +33,7 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showAlert("Vui lòng nhập tên đăng nhập và mật khẩu.");
+            showAlert("Please enter username and password.");
             return;
         }
 
@@ -60,23 +60,23 @@ public class LoginController {
                             userRole = data.getString("role");
                             userFullName = data.optString("fullName", "");
 
-                            System.out.println("Access Token là: " + userToken);
-                            System.out.println("User Role là: " + userRole);
+                            System.out.println("Access Token is: " + userToken);
+                            System.out.println("User Role is: " + userRole);
 
                             javafx.application.Platform.runLater(this::loadMainView);
                         } else {
-                            javafx.application.Platform.runLater(() -> showAlert("Đăng nhập thất bại!"));
+                            javafx.application.Platform.runLater(() -> showAlert("Login failed!"));
                         }
                     })
                     .exceptionally(ex -> {
                         ex.printStackTrace();
-                        javafx.application.Platform.runLater(() -> showAlert("Lỗi kết nối máy chủ."));
+                        javafx.application.Platform.runLater(() -> showAlert("Server connection error."));
                         return null;
                     });
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Đăng nhập thất bại.");
+            showAlert("Login failed.");
         }
     }
 
@@ -90,18 +90,18 @@ public class LoginController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Không thể tải giao diện chính.");
+            showAlert("Cannot load main interface.");
         }
     }
 
     @FXML
     private void handleForgotPassword() {
-        showAlert("Chức năng quên mật khẩu chưa được triển khai.");
+        showAlert("Forgot password feature is not implemented yet.");
     }
 
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();

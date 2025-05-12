@@ -6,16 +6,13 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.NewAccountController">
     <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
         <Label text="Create New Account" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-
-        <TextField fx:id="fullNameField" promptText="Full Name"/>
-        <TextField fx:id="usernameField" promptText="Username"/>
-        <TextField fx:id="passwordField" promptText="Password"/>
-        <TextField fx:id="emailField" promptText="Email"/>
-
-        <ComboBox fx:id="roleChoiceBox" promptText="Select Role"/>
-        <TextField fx:id="phoneNumberField" promptText="Phone Number"/>
-        <ComboBox fx:id="genderChoiceBox" promptText="Select Gender"/>
-
+        <Label text="Full Name"/><TextField fx:id="fullNameField" promptText="Full Name"/>
+        <Label text="Username"/><TextField fx:id="usernameField" promptText="Username"/>
+        <Label text="Password"/><TextField fx:id="passwordField" promptText="Password"/>
+        <Label text="Email"/><TextField fx:id="emailField" promptText="Email"/>
+        <Label text="Role"/><ComboBox fx:id="roleChoiceBox" promptText="Select Role"/>
+        <Label text="Phone Number"/><TextField fx:id="phoneNumberField" promptText="Phone Number"/>
+        <Label text="Gender"/><ComboBox fx:id="genderChoiceBox" promptText="Select Gender"/>
         <HBox spacing="10">
             <Button text="Save" onAction="#saveAccount"/>
             <Button text="Cancel" onAction="#cancelCreate"/>
