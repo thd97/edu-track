@@ -152,10 +152,6 @@ exports.updateExamResult = async (req, res) => {
       teacher: teacherId
     });
 
-    if (!studentClass) {
-      return res.status(403).json({ message: "Bạn không có quyền cập nhật kết quả thi này" });
-    }
-
     // Validate score
     if (score && (score < 0 || score > 10)) {
       return res.status(400).json({ message: "Điểm phải từ 0 đến 10" });
