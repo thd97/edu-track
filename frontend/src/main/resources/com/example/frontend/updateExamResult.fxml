@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.UpdateExamResultController">
+    <VBox spacing="10" style="-fx-padding: 20;"
+          AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <Label text="Update Exam Result" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="studentIdField" promptText="Student ID"/>
+        <TextField fx:id="examIdField" promptText="Exam ID"/>
+        <TextField fx:id="scoreField" promptText="Score"/>
+
+        <HBox spacing="10">
+            <Button text="Update" onAction="#updateExamResult"/>
+            <Button text="Cancel" onAction="#cancelUpdate"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
