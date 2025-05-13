@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.NewPeriodController">
+    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <Label text="Create New Period" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <!-- Period Number -->
+        <TextField fx:id="periodNumberField" promptText="Period Number"/>
+
+        <!-- Start Time -->
+        <HBox spacing="10">
+            <Label text="Start Time:" />
+            <ComboBox fx:id="startHourBox" prefWidth="80" promptText="HH"/>
+            <Label text=":"/>
+            <ComboBox fx:id="startMinuteBox" prefWidth="80" promptText="MM"/>
+        </HBox>
+
+        <!-- End Time -->
+        <HBox spacing="10">
+            <Label text="End Time:" />
+            <ComboBox fx:id="endHourBox" prefWidth="80" promptText="HH"/>
+            <Label text=":"/>
+            <ComboBox fx:id="endMinuteBox" prefWidth="80" promptText="MM"/>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="10">
+            <Button text="Save" onAction="#savePeriod"/>
+            <Button text="Cancel" onAction="#cancelCreate"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

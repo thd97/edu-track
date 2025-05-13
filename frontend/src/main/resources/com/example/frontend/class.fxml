@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.frontend.ClassesController">
@@ -13,19 +14,19 @@
                 <Label text="Classes" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
                 <HBox spacing="10">
-                    <ChoiceBox fx:id="choiceBox" prefWidth="150.0"/>
-                    <TextField fx:id="searchField" promptText="Tìm kiếm..." prefWidth="200.0"/>
-                    <Button text="Tìm" onAction="#handleSearch"/>
+                    <ComboBox fx:id="choiceBox" prefWidth="150.0"/>
+                    <TextField fx:id="searchField" promptText="Input keyword..." prefWidth="200.0"/>
+                    <Button text="Filter" onAction="#handleSearch"/>
                 </HBox>
 
                 <TableView fx:id="classesTable" prefHeight="500.0" prefWidth="800.0">
                     <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0"/>
-                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="150.0"/>
-                        <TableColumn fx:id="codeColumn" text="Code" prefWidth="150.0"/>
-                        <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200.0"/>
-                        <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="150.0"/>
-                        <TableColumn fx:id="updatedAtColumn" text="Updated At" prefWidth="150.0"/>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
+                        <TableColumn fx:id="nameColumn" text="Class Name" prefWidth="200.0"/>
+                        <TableColumn fx:id="teacherNameColumn" text="Teacher Name" prefWidth="200.0"/>
+                        <TableColumn fx:id="totalStudentColumn" text="Total Student" prefWidth="150.0"/>
+                        <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="150.0" visible="false"/>
+                        <TableColumn fx:id="updatedAtColumn" text="Updated At" prefWidth="150.0" visible="false"/>
                     </columns>
                 </TableView>
 

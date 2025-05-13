@@ -6,15 +6,13 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.UpdateStudentController">
     <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
         <Label text="Update Student" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-
-        <TextField fx:id="fullNameField" promptText="Full Name"/>
-        <TextField fx:id="emailField" promptText="Email"/>
-        <TextField fx:id="phoneNumberField" promptText="Phone Number"/>
-        <ComboBox fx:id="genderComboBox" promptText="Select Gender"/>
-        <DatePicker fx:id="dateOfBirthPicker" promptText="Date of Birth"/>
-        <TextField fx:id="addressField" promptText="Address"/>
-        <TextField fx:id="classIdField" promptText="Class ID"/>
-
+        <Label text="Full Name"/><TextField fx:id="fullNameField" promptText="Full Name"/>
+        <Label text="Email"/><TextField fx:id="emailField" promptText="Email"/>
+        <Label text="Phone Number"/><TextField fx:id="phoneNumberField" promptText="Phone Number"/>
+        <Label text="Gender"/><ComboBox fx:id="genderComboBox" promptText="Select Gender"/>
+        <Label text="Date of Birth"/><DatePicker fx:id="dateOfBirthPicker" promptText="Date of Birth"/>
+        <Label text="Address"/><TextField fx:id="addressField" promptText="Address"/>
+        <Label text="Class"/><ComboBox fx:id="classComboBox" promptText="Select Class"/>
         <HBox spacing="10">
             <Button text="Save" onAction="#updateStudent"/>
             <Button text="Cancel" onAction="#cancelUpdate"/>

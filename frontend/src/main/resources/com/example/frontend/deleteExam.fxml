@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.frontend.DeleteExamController">
+    <VBox spacing="10" style="-fx-padding: 20;"
+          AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <Label fx:id="confirmationLabel"
+               text="Bạn có chắc muốn xóa kỳ thi?"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+        <HBox spacing="10">
+            <Button fx:id="deleteButton" text="Yes" onAction="#deleteExam"/>
+            <Button fx:id="cancelButton" text="Cancel" onAction="#cancelDelete"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

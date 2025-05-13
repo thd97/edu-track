@@ -21,15 +21,16 @@ import java.util.List;
 public class StudentsController {
 
     @FXML private TextField searchField;
-    @FXML private ChoiceBox<String> choiceBox;
-    @FXML private TableView<StudentModel> studentsTable;
-    @FXML private TableColumn<StudentModel, String> idColumn;
+    @FXML private ChoiceBox<ChoiceItem> choiceBox;
+    @FXML private TableView<StudentModel> studentTable;
     @FXML private TableColumn<StudentModel, String> nameColumn;
     @FXML private TableColumn<StudentModel, String> emailColumn;
     @FXML private TableColumn<StudentModel, String> phoneNumberColumn;
     @FXML private TableColumn<StudentModel, String> addressColumn;
     @FXML private TableColumn<StudentModel, String> genderColumn;
     @FXML private TableColumn<StudentModel, String> dateOfBirthColumn;
+    @FXML private TableColumn<StudentModel, String> classNameColumn;
+
     @FXML private AnchorPane contentArea;
     @FXML private Button btnNew, btnUpdate, btnDelete;
 
@@ -37,7 +38,12 @@ public class StudentsController {
 
     @FXML
     public void initialize() {
-        choiceBox.setItems(FXCollections.observableArrayList("name", "email"));
+        choiceBox.setItems(FXCollections.observableArrayList(
+            new ChoiceItem("Name", "name"),
+            new ChoiceItem("Email", "email")
+        ));
+        choiceBox.setValue(choiceBox.getItems().get(0));
+
         setupTable();
         fetchStudents();
 
@@ -47,15 +53,15 @@ public class StudentsController {
     }
 
     private void setupTable() {
-        idColumn.setCellValueFactory(cell -> cell.getValue().idProperty());
         nameColumn.setCellValueFactory(cell -> cell.getValue().nameProperty());
         emailColumn.setCellValueFactory(cell -> cell.getValue().emailProperty());
         phoneNumberColumn.setCellValueFactory(cell -> cell.getValue().phoneNumberProperty());
         addressColumn.setCellValueFactory(cell -> cell.getValue().addressProperty());
         genderColumn.setCellValueFactory(cell -> cell.getValue().genderProperty());
         dateOfBirthColumn.setCellValueFactory(cell -> cell.getValue().dateOfBirthProperty());
+        classNameColumn.setCellValueFactory(cell -> cell.getValue().classNameProperty());
 
-        studentsTable.setItems(studentsList);
+        studentTable.setItems(studentsList);
     }
 
     private void fetchStudents() {
@@ -63,9 +69,7 @@ public class StudentsController {
             @Override
             protected List<StudentModel> call() throws Exception {
                 HttpClient client = HttpClient.newHttpClient();
-                String url = ApiConstants.GET_STUDENTS_API + "?limit=10&page=1";
-
-                System.out.println("Đang gọi API: " + url);
+                String url = ApiConstants.GET_STUDENTS_API + "?limit=100&page=1";
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
@@ -84,14 +88,19 @@ public class StudentsController {
 
                 for (int i = 0; i < dataArray.length(); i++) {
                     JSONObject item = dataArray.getJSONObject(i);
+                    JSONObject classObj = item.optJSONObject("class");
+                    String className = classObj != null ? classObj.optString("name", "") : "";
+                    String classId = classObj != null ? classObj.optString("_id", "") : "";
                     StudentModel student = new StudentModel(
                             item.optString("_id"),
-                            item.optString("name"),
+                            item.optString("fullName"),
                             item.optString("email"),
                             item.optString("phoneNumber"),
-                            item.optString("address"),
-                            item.optString("gender"),
-                            item.optString("dateOfBirth")
+                            item.optString("address", ""),
+                            item.optString("gender", ""),
+                            item.optString("dateOfBirth", ""),
+                            classId,
+                            className
                     );
                     list.add(student);
                 }
@@ -101,7 +110,6 @@ public class StudentsController {
 
         task.setOnSucceeded(e -> studentsList.setAll(task.getValue()));
         task.setOnFailed(e -> showAlert("Lỗi tải dữ liệu: " + task.getException().getMessage()));
-
         new Thread(task).start();
     }
 
@@ -125,7 +133,7 @@ public class StudentsController {
 
     @FXML
     private void handleUpdateStudent() {
-        StudentModel selected = studentsTable.getSelectionModel().getSelectedItem();
+        StudentModel selected = studentTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Vui lòng chọn học sinh để cập nhật.");
             return;
@@ -144,7 +152,7 @@ public class StudentsController {
 
     @FXML
     private void handleDeleteStudent() {
-        StudentModel selected = studentsTable.getSelectionModel().getSelectedItem();
+        StudentModel selected = studentTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Vui lòng chọn học sinh để xóa.");
             return;
@@ -164,10 +172,11 @@ public class StudentsController {
     @FXML
     private void handleSearch() {
         String keyword = searchField.getText().trim().toLowerCase();
-        String field = choiceBox.getValue();
+        ChoiceItem selected = choiceBox.getValue();
+        String field = selected != null ? selected.getValue() : null;
 
         if (keyword.isEmpty() || field == null) {
-            studentsTable.setItems(studentsList);
+            studentTable.setItems(studentsList);
             return;
         }
 
@@ -182,6 +191,22 @@ public class StudentsController {
                 filtered.add(student);
             }
         }
-        studentsTable.setItems(filtered);
+        studentTable.setItems(filtered);
+    }
+
+    public static class ChoiceItem {
+        private final String label;
+        private final String value;
+        public ChoiceItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+        @Override
+        public String toString() {
+            return label;
+        }
+        public String getValue() {
+            return value;
+        }
     }
 }

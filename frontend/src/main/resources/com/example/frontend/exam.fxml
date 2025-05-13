@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.frontend.ExamsController">
+
+    <center>
+        <AnchorPane fx:id="contentArea" prefHeight="600.0" prefWidth="800.0">
+            <children>
+                <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <Label text="Exams" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+                    <!-- Table -->
+                    <TableView fx:id="examTable" prefHeight="500.0" prefWidth="800.0">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
+                            <TableColumn fx:id="nameColumn" text="Exam Name" prefWidth="250.0" />
+                            <TableColumn fx:id="examDateColumn" text="Exam Date" prefWidth="200.0" />
+                        </columns>
+                    </TableView>
+
+                    <!-- Buttons -->
+                    <HBox spacing="10">
+                        <Button fx:id="btnNew" text="New" />
+                        <Button fx:id="btnUpdate" text="Update" />
+                        <Button fx:id="btnDelete" text="Delete" />
+                    </HBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

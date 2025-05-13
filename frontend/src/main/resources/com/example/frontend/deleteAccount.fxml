@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DeleteClassController">
-    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
-        <Label text="Are you sure you want to delete this class?"
-               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DeleteAccountController">
+    <VBox spacing="10" style="-fx-padding: 20;" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <Label text="Delete Account?" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label fx:id="confirmLabel" wrapText="true"/>
 
         <HBox spacing="10">
-            <Button text="Yes" onAction="#confirmDelete"/>
+            <Button text="Confirm" onAction="#deleteAccount"/>
             <Button text="Cancel" onAction="#cancelDelete"/>
         </HBox>
     </VBox>

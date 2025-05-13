@@ -2,38 +2,49 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.StudentsController">
-    <VBox spacing="10" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 20;">
-        
-        <Label text="Students" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.frontend.StudentsController">
 
-        <HBox spacing="10">
-            <ChoiceBox fx:id="choiceBox" prefWidth="150"/>
-            <TextField fx:id="searchField" promptText="Tìm kiếm..." prefWidth="200"/>
-            <Button text="Tìm" onAction="#handleSearch"/>
-        </HBox>
+    <center>
+        <AnchorPane fx:id="contentArea" prefHeight="600.0" prefWidth="800.0">
+            <children>
+                <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
 
-        <TableView fx:id="studentsTable" prefHeight="500" prefWidth="800">
-            <columns>
-                <TableColumn fx:id="idColumn" text="ID" prefWidth="150"/>
-                <TableColumn fx:id="fullNameColumn" text="Full Name" prefWidth="150"/>
-                <TableColumn fx:id="emailColumn" text="Email" prefWidth="150"/>
-                <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="120"/>
-                <TableColumn fx:id="genderColumn" text="Gender" prefWidth="80"/>
-                <TableColumn fx:id="dateOfBirthColumn" text="Date of Birth" prefWidth="120"/>
-                <TableColumn fx:id="addressColumn" text="Address" prefWidth="150"/>
-                <TableColumn fx:id="classIdColumn" text="Class ID" prefWidth="150"/>
-                <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="150"/>
-                <TableColumn fx:id="updatedAtColumn" text="Updated At" prefWidth="150"/>
-            </columns>
-        </TableView>
+                    <Label text="Students" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-        <HBox spacing="10">
-            <Button fx:id="btnNew" text="New" onAction="#handleNewStudent"/>
-            <Button fx:id="btnUpdate" text="Update" onAction="#handleUpdateStudent"/>
-            <Button fx:id="btnDelete" text="Delete" onAction="#handleDeleteStudent"/>
-        </HBox>
-    </VBox>
-</AnchorPane>
+                    <HBox spacing="10">
+                        <ChoiceBox fx:id="choiceBox" prefWidth="150"/>
+                        <TextField fx:id="searchField" promptText="Input keyword..." prefWidth="200"/>
+                        <Button text="Filter" onAction="#handleSearch"/>
+                    </HBox>
+
+                    <TableView fx:id="studentTable" prefHeight="500.0" prefWidth="800.0">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="100.0" visible="false" />
+                            <TableColumn fx:id="nameColumn" text="Full Name" prefWidth="150"/>
+                            <TableColumn fx:id="classNameColumn" text="Class Name" prefWidth="120"/>
+                            <TableColumn fx:id="genderColumn" text="Gender" prefWidth="80"/>
+                            <TableColumn fx:id="dateOfBirthColumn" text="Date of Birth" prefWidth="120"/>
+                            <TableColumn fx:id="addressColumn" text="Address" prefWidth="150"/>
+                            <TableColumn fx:id="emailColumn" text="Email" prefWidth="150"/>
+                            <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="120"/>
+                        </columns>
+                    </TableView>
+
+                    <HBox spacing="10">
+                        <Button fx:id="btnNew" text="New" onAction="#handleNewStudent"/>
+                        <Button fx:id="btnUpdate" text="Update" onAction="#handleUpdateStudent"/>
+                        <Button fx:id="btnDelete" text="Delete" onAction="#handleDeleteStudent"/>
+                    </HBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

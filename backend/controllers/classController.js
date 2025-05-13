@@ -1,5 +1,6 @@
 const Class = require("../models/Class");
 const User = require("../models/User");
+const Student = require("../models/Student");
 
 // Create new class
 const createClass = async (req, res) => {
@@ -66,9 +67,31 @@ const getClasses = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit);
 
+    // Lấy danh sách classId
+    const classIds = classes.map(cls => cls._id);
+
+    // Đếm số học sinh theo classId
+    const studentCounts = await Student.aggregate([
+      { $match: { class: { $in: classIds } } },
+      { $group: { _id: "$class", total: { $sum: 1 } } }
+    ]);
+
+    // Map classId -> totalStudent
+    const countMap = {};
+    studentCounts.forEach(item => {
+      countMap[item._id.toString()] = item.total;
+    });
+
+    // Gán totalStudent vào từng class
+    const classesWithTotal = classes.map(cls => {
+      const obj = cls.toObject();
+      obj.totalStudent = countMap[cls._id.toString()] || 0;
+      return obj;
+    });
+
     res.status(200).json({
       success: true,
-      data: classes,
+      data: classesWithTotal,
       pagination: {
         total,
         page: parseInt(page),

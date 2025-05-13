@@ -1,8 +1,8 @@
 package com.example.frontend;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,56 +20,51 @@ public class DeleteClassController {
     @FXML private Button btnDelete, btnCancel;
 
     private String classId;
+    private String className;
 
     public void setClassModel(ClassModel model) {
         this.classId = model.getId();
-        confirmLabel.setText("Bạn có chắc muốn xóa lớp " + model.getName() + "?");
+        this.className = model.getName();
+        confirmLabel.setText("Are you sure you want to delete class: " + className + "?");
     }
 
     @FXML
-    public void initialize() {
-        btnDelete.setOnAction(e -> deleteClass());
-        btnCancel.setOnAction(e -> cancelDelete());
-    }
-
-    private void deleteClass() {
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                HttpClient client = HttpClient.newHttpClient();
-
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(ApiConstants.DELETE_CLASS_API.replace(":id", classId)))
-                        .header("Authorization", "Bearer " + LoginController.userToken)
-                        .DELETE()
-                        .build();
-
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() != 200) {
-                    throw new RuntimeException("Lỗi khi xóa lớp: " + response.body());
-                }
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            showAlert("Xóa lớp thành công!");
-            backToClassPage();
-        });
-        task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
-
-        new Thread(task).start();
-    }
-
-    private void cancelDelete() {
-        backToClassPage();
-    }
-
-    private void backToClassPage() {
+    private void confirmDelete() {
         try {
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("/com/example/frontend/class.fxml"));
+            HttpClient client = HttpClient.newHttpClient();
+            String url = ApiConstants.DELETE_CLASS_API.replace(":id", classId);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + LoginController.userToken)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() == 200) {
+                showAlert("Class deleted successfully!");
+                returnToClassList();
+            } else {
+                showAlert("Error deleting class: " + response.body());
+            }
+        } catch (Exception e) {
+            showAlert("Error: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void cancelDelete() {
+        returnToClassList();
+    }
+
+    private void returnToClassList() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/class.fxml"));
+            Parent root = loader.load();
             AnchorPane contentArea = (AnchorPane) confirmLabel.getScene().lookup("#contentArea");
-            contentArea.getChildren().setAll(pane);
+            if (contentArea != null) {
+                contentArea.getChildren().setAll(root);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +72,7 @@ public class DeleteClassController {
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setContentText(message);
         alert.showAndWait();
     }
