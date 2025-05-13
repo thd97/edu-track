@@ -84,7 +84,7 @@ public class AccountsController {
                         .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                System.out.println("API response: " + response.body());
+                // System.out.println("API response: " + response.body());
 
                 if (response.statusCode() == 200) {
                     JSONObject json = new JSONObject(response.body());

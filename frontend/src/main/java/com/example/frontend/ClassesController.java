@@ -143,7 +143,6 @@ public class ClassesController {
             contentArea.getChildren().setAll(updatePage);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(e);
             // showAlert(e);
         }
     }

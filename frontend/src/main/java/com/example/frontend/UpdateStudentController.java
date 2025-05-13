@@ -60,7 +60,7 @@ public class    UpdateStudentController {
                 java.util.List<ClassItem> classList = new java.util.ArrayList<>();
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:3004/api/classes?limit=100&page=1"))
+                        .uri(URI.create(ApiConstants.GET_CLASSES_API + "?limit=100&page=1"))
                         .header("Authorization", "Bearer " + LoginController.userToken)
                         .GET()
                         .build();

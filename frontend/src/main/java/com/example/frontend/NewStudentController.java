@@ -42,7 +42,7 @@ public class NewStudentController {
 
     private void fetchClassList() {
         try {
-            URL url = new URL("http://localhost:3004/api/classes?limit=100&page=1");
+            URL url = new URL(ApiConstants.GET_CLASSES_API + "?limit=100&page=1");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Authorization", "Bearer " + LoginController.userToken);
@@ -96,7 +96,7 @@ public class NewStudentController {
             studentJson.put("address", address);
             studentJson.put("class", classId);
 
-            URL url = new URL("http://localhost:3004/api/students");
+            URL url = new URL(ApiConstants.CREATE_STUDENT_API);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -153,7 +153,6 @@ public class NewStudentController {
         alert.showAndWait();
     }
 
-    // Class nội bộ đại diện cho mỗi lớp học
     public static class ClassItem {
         private final String id;
         private final String name;

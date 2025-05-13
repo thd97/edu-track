@@ -52,7 +52,7 @@ public class LoginController {
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenApply(HttpResponse::body)
                     .thenAccept(responseBody -> {
-                        System.out.println("API Login Response: " + responseBody);
+                        // System.out.println("API Login Response: " + responseBody);
                         JSONObject responseJson = new JSONObject(responseBody);
                         if (responseJson.getBoolean("success")) {
                             JSONObject data = responseJson.getJSONObject("data");
@@ -60,8 +60,8 @@ public class LoginController {
                             userRole = data.getString("role");
                             userFullName = data.optString("fullName", "");
 
-                            System.out.println("Access Token is: " + userToken);
-                            System.out.println("User Role is: " + userRole);
+                            // System.out.println("Access Token is: " + userToken);
+                            // System.out.println("User Role is: " + userRole);
 
                             javafx.application.Platform.runLater(this::loadMainView);
                         } else {
