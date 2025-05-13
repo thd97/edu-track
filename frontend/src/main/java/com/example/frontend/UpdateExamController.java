@@ -88,11 +88,8 @@ public class UpdateExamController {
             Parent examPage = loader.load();
 
             AnchorPane content = (AnchorPane) nameField.getScene().lookup("#contentArea");
-            if (content != null) {
                 content.getChildren().setAll(examPage);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+            
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Không thể quay về trang exam.");

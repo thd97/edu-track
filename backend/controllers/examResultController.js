@@ -22,13 +22,15 @@ exports.createExamResult = async (req, res) => {
 
     // Check if score is valid
     if (score < 0 || score > 10) {
-      return res.status(400).json({ message: "Score must be between 0 and 10" });
+      return res
+        .status(400)
+        .json({ message: "Score must be between 0 and 10" });
     }
 
     const examResult = new ExamResult({
       exam,
       student,
-      score,
+      score
     });
 
     await examResult.save();
@@ -44,7 +46,10 @@ exports.getAllExamResults = async (req, res) => {
     const examResults = await ExamResult.find()
       .populate("exam")
       .populate("student");
-    res.json(examResults);
+    res.json({
+      success: true,
+      data: examResults
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -59,7 +64,7 @@ exports.getExamResultById = async (req, res) => {
     if (!examResult) {
       return res.status(404).json({ message: "Exam result not found" });
     }
-    res.json(examResult);
+    res.json({ success: true, data: examResult });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,7 +83,9 @@ exports.getExamResultsByClass = async (req, res) => {
     });
 
     if (!classExists) {
-      return res.status(403).json({ message: "Bạn không có quyền truy cập lớp học này" });
+      return res
+        .status(403)
+        .json({ message: "Bạn không có quyền truy cập lớp học này" });
     }
 
     // Lấy tất cả học sinh trong lớp
@@ -92,7 +99,10 @@ exports.getExamResultsByClass = async (req, res) => {
       .populate("exam")
       .populate("student");
 
-    res.json(examResults);
+    res.json({
+      success: true,
+      examResults
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -111,7 +121,9 @@ exports.getExamResultsByClassAndExam = async (req, res) => {
     });
 
     if (!classExists) {
-      return res.status(403).json({ message: "Bạn không có quyền truy cập lớp học này" });
+      return res
+        .status(403)
+        .json({ message: "Bạn không có quyền truy cập lớp học này" });
     }
 
     // Lấy tất cả học sinh trong lớp
@@ -126,7 +138,7 @@ exports.getExamResultsByClassAndExam = async (req, res) => {
       .populate("exam")
       .populate("student");
 
-    res.json(examResults);
+    res.json({ success: true, data: examResults });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -139,8 +151,9 @@ exports.updateExamResult = async (req, res) => {
     const teacherId = req.user.id;
 
     // Lấy thông tin exam result
-    const examResult = await ExamResult.findById(req.params.id)
-      .populate("student");
+    const examResult = await ExamResult.findById(req.params.id).populate(
+      "student"
+    );
 
     if (!examResult) {
       return res.status(404).json({ message: "Không tìm thấy kết quả thi" });
@@ -165,7 +178,7 @@ exports.updateExamResult = async (req, res) => {
       .populate("exam")
       .populate("student");
 
-    res.json(updatedExamResult);
+    res.json({ success: true, data: updatedExamResult });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -182,4 +195,4 @@ exports.deleteExamResult = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}; 
+};

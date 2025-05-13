@@ -87,11 +87,8 @@ public class DeletePeriodController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/period.fxml"));
             Parent periodRoot = loader.load();
             AnchorPane rootPane = (AnchorPane) confirmationLabel.getScene().lookup("#contentArea");
-            if (rootPane != null) {
                 rootPane.getChildren().setAll(periodRoot);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

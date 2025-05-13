@@ -83,11 +83,8 @@ public class DeleteExamController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/exam.fxml"));
             Parent examRoot = loader.load();
             AnchorPane rootPane = (AnchorPane) confirmationLabel.getScene().lookup("#contentArea");
-            if (rootPane != null) {
                 rootPane.getChildren().setAll(examRoot);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

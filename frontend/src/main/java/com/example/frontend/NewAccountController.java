@@ -88,11 +88,8 @@ public class NewAccountController {
             Parent accountRoot = loader.load();
 
             AnchorPane rootPane = (AnchorPane) fullNameField.getScene().lookup("#contentArea");
-            if (rootPane != null) {
                 rootPane.getChildren().setAll(accountRoot);
-            } else {
-                System.out.println("Cannot find contentArea!");
-            }
+            
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,11 +117,8 @@ public class NewAccountController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("account.fxml"));
                     Parent accountRoot = loader.load();
                     AnchorPane rootPane = (AnchorPane) fullNameField.getScene().lookup("#contentArea");
-                    if (rootPane != null) {
                         rootPane.getChildren().setAll(accountRoot);
-                    } else {
-                        System.out.println("Cannot find contentArea!");
-                    }
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                     showAlert("Error returning to account list.");

@@ -58,7 +58,6 @@ public class ExamResultController {
                         .build();
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                System.out.println("Exam Result API response: " + response.body());
 
                 if (response.statusCode() != 200)
                     throw new RuntimeException("Lỗi tải kết quả thi: " + response.body());
@@ -80,7 +79,7 @@ public class ExamResultController {
                             exam.getString("_id"),
                             student.getString("_id"),
                             String.valueOf(obj.getInt("score")),
-                            student.getString("name"),
+                            student.getString("fullName"),
                             exam.getString("name")
                     ));
                 }
@@ -90,7 +89,7 @@ public class ExamResultController {
         };
 
         task.setOnSucceeded(e -> resultList.setAll(task.getValue()));
-        task.setOnFailed(e -> showAlert("Lỗi tải dữ liệu: " + task.getException().getMessage()));
+        task.setOnFailed(e -> showAlert("đây: " + task.getException().getMessage()));
         new Thread(task).start();
     }
 

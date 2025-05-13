@@ -107,11 +107,8 @@ public class NewPeriodController {
             Parent periodRoot = loader.load();
 
             AnchorPane rootPane = (AnchorPane) periodNumberField.getScene().lookup("#contentArea");
-            if (rootPane != null) {
                 rootPane.getChildren().setAll(periodRoot);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+           
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Lỗi khi hủy tạo kỳ học.");

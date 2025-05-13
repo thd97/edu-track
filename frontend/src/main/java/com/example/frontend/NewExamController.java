@@ -80,11 +80,8 @@ public class NewExamController {
             Parent examRoot = loader.load();
 
             AnchorPane rootPane = (AnchorPane) nameField.getScene().lookup("#contentArea");
-            if (rootPane != null) {
                 rootPane.getChildren().setAll(examRoot);
-            } else {
-                System.out.println("Không tìm thấy contentArea!");
-            }
+            
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Lỗi khi hủy tạo kỳ thi.");
@@ -111,11 +108,8 @@ public class NewExamController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("exams.fxml"));
                     Parent examRoot = loader.load();
                     AnchorPane rootPane = (AnchorPane) nameField.getScene().lookup("#contentArea");
-                    if (rootPane != null) {
                         rootPane.getChildren().setAll(examRoot);
-                    } else {
-                        System.out.println("Không tìm thấy contentArea!");
-                    }
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                     showAlert("Lỗi khi quay về danh sách kỳ thi.");
