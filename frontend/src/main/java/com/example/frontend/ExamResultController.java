@@ -60,24 +60,32 @@ public class ExamResultController {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 System.out.println("Exam Result API response: " + response.body());
 
-                if (response.statusCode() == 200) {
-                    JSONArray jsonArray = new JSONArray(response.body());
-                    List<ExamResultModel> list = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject obj = jsonArray.getJSONObject(i);
-                        list.add(new ExamResultModel(
-                                obj.getString("_id"),
-                                obj.getJSONObject("exam").getString("_id"),
-                                obj.getJSONObject("student").getString("_id"),
-                                String.valueOf(obj.getInt("score")),
-                                obj.getJSONObject("student").getString("name"),
-                                obj.getJSONObject("exam").getString("name")
-                        ));
-                    }
-                    return list;
-                } else {
+                if (response.statusCode() != 200)
                     throw new RuntimeException("Lỗi tải kết quả thi: " + response.body());
+
+                JSONObject json = new JSONObject(response.body());
+                if (!json.has("data"))
+                    throw new RuntimeException("Phản hồi không có 'data'");
+
+                JSONArray dataArray = json.getJSONArray("data");
+                List<ExamResultModel> list = new ArrayList<>();
+
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject obj = dataArray.getJSONObject(i);
+                    JSONObject student = obj.getJSONObject("student");
+                    JSONObject exam = obj.getJSONObject("exam");
+
+                    list.add(new ExamResultModel(
+                            obj.getString("_id"),
+                            exam.getString("_id"),
+                            student.getString("_id"),
+                            String.valueOf(obj.getInt("score")),
+                            student.getString("name"),
+                            exam.getString("name")
+                    ));
                 }
+
+                return list;
             }
         };
 
