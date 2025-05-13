@@ -35,7 +35,6 @@ public class ApiConstants {
     public static final String CREATE_EXAM_RESULT_API = BASE_URL + "/api/exam-results";
     public static final String UPDATE_EXAM_RESULT_API = BASE_URL + "/api/exam-results/:id";
     public static final String DELETE_EXAM_RESULT_API = BASE_URL + "/api/exam-results/:id";
-
     // Period APIs
     public static final String GET_PERIODS_API = BASE_URL + "/api/periods";
     public static final String GET_PERIOD_BY_ID_API = BASE_URL + "/api/periods/:id";

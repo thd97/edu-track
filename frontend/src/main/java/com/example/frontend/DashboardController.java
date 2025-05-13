@@ -53,7 +53,7 @@ public class DashboardController {
         btnStudents.setOnAction(event -> loadStudents());
         btnClasses.setOnAction(event -> loadClasses());
         btnExams.setOnAction(event -> loadExams());
-        btnResults.setOnAction(event -> loadData("/results"));
+        btnResults.setOnAction(event -> loadExamResults());
         btnPeriod.setOnAction(event -> loadPeriod());
         btnLogout.setOnAction(event -> logout());
 
@@ -114,6 +114,17 @@ public class DashboardController {
         } catch (IOException e) {
             e.printStackTrace();
             displayText("Error loading Exam page: " + e.getMessage());
+        }
+    }
+    private void loadExamResults() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/examResult.fxml"));
+            BorderPane examResultPane = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(examResultPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayText("Lỗi khi tải trang Exam Result: " + e.getMessage());
         }
     }
     private void loadPeriod() {
