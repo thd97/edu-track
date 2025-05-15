@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3867a988-6765-4699-b090-c3fd9c3690f2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/DeleteExamResultController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/ExamResultController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/ExamResultModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/NewExamResultController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/UpdateExamResultController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/frontend/delete_exam_result.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/frontend/examResult.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/frontend/newExamResult.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/frontend/updateExamResult.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/frontend/ApiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/ApiConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/frontend/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/DashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/frontend/ExamsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/frontend/ExamsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/frontend/Login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/frontend/Login-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +97,9 @@
       <workItem from="1747036539082" duration="8713000" />
       <workItem from="1747055018506" duration="302000" />
       <workItem from="1747056434322" duration="3470000" />
-      <workItem from="1747097133849" duration="3175000" />
+      <workItem from="1747097133849" duration="6515000" />
+      <workItem from="1747122399321" duration="5493000" />
+      <workItem from="1747216559535" duration="2061000" />
     </task>
     <servers />
   </component>

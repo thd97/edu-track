@@ -36,11 +36,11 @@
                                style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-padding: 10;" />
 
                 <!-- Forgot Password -->
-                <HBox alignment="CENTER_RIGHT" prefWidth="260">
-                    <children>
-                        <Hyperlink onAction="#handleForgotPassword" style="-fx-text-fill: #7B8A9A;" text="Forgot password?" />
-                    </children>
-                </HBox>
+<!--                <HBox alignment="CENTER_RIGHT" prefWidth="260">-->
+<!--                    <children>-->
+<!--                        <Hyperlink onAction="#handleForgotPassword" style="-fx-text-fill: #7B8A9A;" text="Forgot password?" />-->
+<!--                    </children>-->
+<!--                </HBox>-->
 
                 <!-- Login button -->
                 <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="260"
