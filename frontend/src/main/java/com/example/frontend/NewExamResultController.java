@@ -50,7 +50,7 @@ public class NewExamResultController {
                 if (response.statusCode() == 200) {
                     JSONArray data = new JSONObject(response.body()).getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
-                        String examId = data.getJSONObject(i).getString("id");
+                        String examId = data.getJSONObject(i).getString("_id");
                         exams.add(examId);
                     }
                 } else {
@@ -79,7 +79,7 @@ public class NewExamResultController {
                 if (response.statusCode() == 200) {
                     JSONArray data = new JSONObject(response.body()).getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
-                        String studentId = data.getJSONObject(i).getString("id");
+                        String studentId = data.getJSONObject(i).getString("_id");
                         students.add(studentId);
                     }
                 } else {

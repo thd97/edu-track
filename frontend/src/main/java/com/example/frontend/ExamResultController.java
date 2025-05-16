@@ -24,26 +24,35 @@ public class ExamResultController {
     @FXML private TableColumn<ExamResultModel, String> studentNameColumn;
     @FXML private TableColumn<ExamResultModel, String> examNameColumn;
     @FXML private TableColumn<ExamResultModel, String> scoreColumn;
+    @FXML private ComboBox<String> filterComboBox;
+
+
+    @FXML private TextField searchField;
     @FXML private Button btnNew, btnUpdate, btnDelete;
     @FXML private AnchorPane contentArea;
 
     private final ObservableList<ExamResultModel> resultList = FXCollections.observableArrayList();
+    private ObservableList<ExamResultModel> filteredList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         setupTable();
         fetchExamResults();
 
+        filterComboBox.getItems().addAll("Student Name", "Exam Name", "Score");
+        filterComboBox.setValue("Student Name");
+
         btnNew.setOnAction(e -> loadPage("/com/example/frontend/newExamResult.fxml"));
         btnUpdate.setOnAction(e -> updateSelectedResult());
         btnDelete.setOnAction(e -> deleteSelectedResult());
     }
 
+
     private void setupTable() {
         studentNameColumn.setCellValueFactory(cellData -> cellData.getValue().studentNameProperty());
         examNameColumn.setCellValueFactory(cellData -> cellData.getValue().classNameProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty());
-        examResultTable.setItems(resultList);
+        examResultTable.setItems(filteredList);
     }
 
     private void fetchExamResults() {
@@ -88,10 +97,38 @@ public class ExamResultController {
             }
         };
 
-        task.setOnSucceeded(e -> resultList.setAll(task.getValue()));
-        task.setOnFailed(e -> showAlert("đây: " + task.getException().getMessage()));
+        task.setOnSucceeded(e -> {
+            resultList.setAll(task.getValue());
+            filteredList.setAll(resultList);  // Gán ban đầu
+        });
+        task.setOnFailed(e -> showAlert("Lỗi tải dữ liệu: " + task.getException().getMessage()));
         new Thread(task).start();
     }
+
+    @FXML
+    private void handleSearch() {
+        String keyword = searchField.getText().toLowerCase().trim();
+        String selectedField = filterComboBox.getValue();
+
+        if (keyword.isEmpty()) {
+            filteredList.setAll(resultList);
+            return;
+        }
+
+        filteredList.setAll(resultList.filtered(result -> {
+            switch (selectedField) {
+                case "Student Name":
+                    return result.getStudentName().toLowerCase().contains(keyword);
+                case "Exam Name":
+                    return result.getClassName().toLowerCase().contains(keyword);
+                case "Score":
+                    return result.getScore().toLowerCase().contains(keyword);
+                default:
+                    return false;
+            }
+        }));
+    }
+
 
     private void loadPage(String fxml) {
         try {

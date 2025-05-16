@@ -19,6 +19,14 @@
 
                     <Label text="Exam Results" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
+                    <!-- Filter section -->
+                    <HBox spacing="10">
+                        <ComboBox fx:id="filterComboBox" prefWidth="150.0" />
+                        <TextField fx:id="searchField" promptText="Input keyword..." prefWidth="200.0"/>
+                        <Button text="Filter" onAction="#handleSearch"/>
+                    </HBox>
+
+
                     <!-- Table -->
                     <TableView fx:id="examResultTable" prefHeight="500.0" prefWidth="800.0">
                         <columns>
