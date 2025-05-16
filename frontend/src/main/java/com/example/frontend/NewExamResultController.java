@@ -22,12 +22,12 @@ import java.util.Map;
 
 public class NewExamResultController {
 
-    @FXML private ComboBox<String> examComboBox;
-    @FXML private ComboBox<String> studentComboBox;
+    @FXML private ComboBox<ExamItem> examComboBox;
+    @FXML private ComboBox<StudentItem> studentComboBox;
     @FXML private TextField scoreField;
 
-    private final ObservableList<String> exams = FXCollections.observableArrayList();
-    private final ObservableList<String> students = FXCollections.observableArrayList();
+    private final ObservableList<ExamItem> exams = FXCollections.observableArrayList();
+    private final ObservableList<StudentItem> students = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -50,8 +50,10 @@ public class NewExamResultController {
                 if (response.statusCode() == 200) {
                     JSONArray data = new JSONObject(response.body()).getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
-                        String examId = data.getJSONObject(i).getString("_id");
-                        exams.add(examId);
+                        JSONObject obj = data.getJSONObject(i);
+                        String id = obj.getString("_id");
+                        String name = obj.getString("name");
+                        exams.add(new ExamItem(id, name));
                     }
                 } else {
                     throw new RuntimeException("Lỗi khi tải danh sách kỳ thi");
@@ -79,8 +81,10 @@ public class NewExamResultController {
                 if (response.statusCode() == 200) {
                     JSONArray data = new JSONObject(response.body()).getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
-                        String studentId = data.getJSONObject(i).getString("_id");
-                        students.add(studentId);
+                        JSONObject obj = data.getJSONObject(i);
+                        String id = obj.getString("_id");
+                        String name = obj.getString("fullName");
+                        students.add(new StudentItem(id, name));
                     }
                 } else {
                     throw new RuntimeException("Lỗi khi tải danh sách học sinh");
@@ -95,18 +99,18 @@ public class NewExamResultController {
 
     @FXML
     private void saveExamResult() {
-        String examId = examComboBox.getValue();
-        String studentId = studentComboBox.getValue();
-        String score = scoreField.getText();
+        ExamItem selectedExam = examComboBox.getValue();
+        StudentItem selectedStudent = studentComboBox.getValue();
+        String score = scoreField.getText().trim();
 
-        if (examId == null || studentId == null || score.isEmpty()) {
+        if (selectedExam == null || selectedStudent == null || score.isEmpty()) {
             showAlert("Vui lòng nhập đầy đủ thông tin.");
             return;
         }
 
         Map<String, String> examResult = new HashMap<>();
-        examResult.put("exam", examId);
-        examResult.put("student", studentId);
+        examResult.put("exam", selectedExam.getId());
+        examResult.put("student", selectedStudent.getId());
         examResult.put("score", score);
 
         Task<Void> task = new Task<>() {
@@ -135,7 +139,6 @@ public class NewExamResultController {
 
         task.setOnSucceeded(e -> showAlertWithRedirect("Tạo kết quả kỳ thi thành công."));
         task.setOnFailed(e -> showAlert("Lỗi: " + task.getException().getMessage()));
-
         new Thread(task).start();
     }
 
@@ -174,5 +177,43 @@ public class NewExamResultController {
                 cancelCreate();
             }
         });
+    }
+
+    // Inner class để đại diện cho kỳ thi (Exam)
+    public static class ExamItem {
+        private final String id;
+        private final String name;
+
+        public ExamItem(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() { return id; }
+        public String getName() { return name; }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    // Inner class để đại diện cho học sinh (Student)
+    public static class StudentItem {
+        private final String id;
+        private final String name;
+
+        public StudentItem(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() { return id; }
+        public String getName() { return name; }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }
