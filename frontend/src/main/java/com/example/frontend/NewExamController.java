@@ -76,22 +76,22 @@ public class NewExamController {
     @FXML
     private void cancelCreate() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("exams.fxml"));
-            Parent examRoot = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/exam.fxml"));
+            Parent examPage = loader.load();
 
-            AnchorPane rootPane = (AnchorPane) nameField.getScene().lookup("#contentArea");
-                rootPane.getChildren().setAll(examRoot);
-            
+            AnchorPane content = (AnchorPane) nameField.getScene().lookup("#contentArea");
+            if (content != null) {
+                content.getChildren().setAll(examPage);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Lỗi khi hủy tạo kỳ thi.");
+            showAlert("Không thể quay về trang exam.");
         }
     }
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
-        alert.setHeaderText("Message");
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -99,22 +99,23 @@ public class NewExamController {
     private void showAlertWithRedirect(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
-        alert.setHeaderText("Message");
         alert.setContentText(message);
+        alert.showAndWait();
+        loadExamView();
+    }
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("exams.fxml"));
-                    Parent examRoot = loader.load();
-                    AnchorPane rootPane = (AnchorPane) nameField.getScene().lookup("#contentArea");
-                        rootPane.getChildren().setAll(examRoot);
-                    
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showAlert("Lỗi khi quay về danh sách kỳ thi.");
-                }
+    private void loadExamView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/exam.fxml"));
+            Parent examPage = loader.load();
+
+            AnchorPane content = (AnchorPane) nameField.getScene().lookup("#contentArea");
+            if (content != null) {
+                content.getChildren().setAll(examPage);
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Không thể quay về trang exam.");
+        }
     }
 }

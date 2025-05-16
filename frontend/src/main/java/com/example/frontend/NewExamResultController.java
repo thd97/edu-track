@@ -31,6 +31,32 @@ public class NewExamResultController {
 
     @FXML
     public void initialize() {
+        // Set up cell factory for exam ComboBox
+        examComboBox.setCellFactory(param -> new ListCell<ExamItem>() {
+            @Override
+            protected void updateItem(ExamItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getName());
+                }
+            }
+        });
+        
+        // Set up cell factory for student ComboBox
+        studentComboBox.setCellFactory(param -> new ListCell<StudentItem>() {
+            @Override
+            protected void updateItem(StudentItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getName());
+                }
+            }
+        });
+
         fetchExams();
         fetchStudents();
     }

@@ -101,7 +101,7 @@ public class    UpdateStudentController {
         updatedStudent.put("gender", genderComboBox.getValue());
         updatedStudent.put("dateOfBirth", dateOfBirthPicker.getValue() != null ? dateOfBirthPicker.getValue().toString() : "");
         ClassItem selectedClass = classComboBox.getValue();
-        updatedStudent.put("classId", selectedClass != null ? selectedClass.getId() : "");
+        updatedStudent.put("class", selectedClass != null ? selectedClass.getId() : "");
 
         Task<Void> task = new Task<>() {
             @Override
