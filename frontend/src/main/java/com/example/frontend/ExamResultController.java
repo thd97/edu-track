@@ -147,7 +147,7 @@ public class ExamResultController {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/editExamResult.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/frontend/updateExamResult.fxml"));
             AnchorPane page = loader.load();
             UpdateExamResultController controller = loader.getController();
             controller.setExamResult(selected);
